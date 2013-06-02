@@ -34,7 +34,7 @@ public class LinkInfo {
 		points.add(d);
 	}
 
-	public List<Point> getPoints() {
+	public List<Point> getLinkPoints() {
 		return points;
 	}
 }

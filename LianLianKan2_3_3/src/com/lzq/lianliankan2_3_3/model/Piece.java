@@ -3,6 +3,10 @@
  */
 package com.lzq.lianliankan2_3_3.model;
 
+import com.lzq.lianliankan2_3_3.conf.GameConf;
+
+import android.graphics.Point;
+
 /**
  * @author Administrator
  * 
@@ -19,13 +23,18 @@ public class Piece {
 		this.indexY = indexY;
 	}
 
-	public boolean inSameImage(Piece other) {
+	public boolean isSameImage(Piece other) {
 		if (null == image) {
 			if (null != other.getImage()) {
 				return false;
 			}
 		}
 		return image.getImageId() == other.getImage().getImageId();
+	}
+
+	public Point getCenter() {
+		return new Point(getImage().getImage().getWidth() / 2 + getBeginX(),
+				getBeginY() + getImage().getImage().getHeight() / 2);
 	}
 
 	public PieceImage getImage() {

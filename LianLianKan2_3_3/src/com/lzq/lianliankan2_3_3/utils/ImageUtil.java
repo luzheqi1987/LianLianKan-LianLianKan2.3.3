@@ -5,6 +5,7 @@ package com.lzq.lianliankan2_3_3.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -76,6 +77,7 @@ public class ImageUtil {
 		}
 		List<Integer> playImageValues = getRandomValues(imageValues, size / 2);
 		playImageValues.addAll(playImageValues);
+		Collections.shuffle(playImageValues);
 		return playImageValues;
 	}
 

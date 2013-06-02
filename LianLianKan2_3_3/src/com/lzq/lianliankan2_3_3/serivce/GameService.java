@@ -13,7 +13,7 @@ import com.lzq.lianliankan2_3_3.model.Piece;
 public interface GameService {
 	void start();
 
-	Piece[][] getPiece();
+	Piece[][] getPieces();
 
 	boolean hasPieces();
 
