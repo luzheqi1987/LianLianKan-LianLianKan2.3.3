@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import android.R.integer;
 import android.graphics.Point;
+import android.util.Log;
 
 import com.lzq.lianliankan2_3_3.board.AbstractBoard;
 import com.lzq.lianliankan2_3_3.board.FullBoard;
@@ -25,6 +27,7 @@ public class GameServiceImpl implements GameService {
 
 	private Piece[][] pieces;
 	private GameConf config;
+	private Map<Integer, List<Point>> existImages = new HashMap<Integer, List<Point>>();
 
 	public GameServiceImpl(GameConf config) {
 		this.config = config;
@@ -52,6 +55,26 @@ public class GameServiceImpl implements GameService {
 			break;
 		}
 		this.pieces = board.create(config);
+		Log.d("start", "start");
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+				if (null != pieces[i][j]) {
+					if (null == existImages.get(pieces[i][j].getImage()
+							.getImageId())) {
+						List<Point> points = new ArrayList<Point>();
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+					} else {
+						List<Point> points = existImages.get(pieces[i][j]
+								.getImage().getImageId());
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+					}
+				}
+			}
+		}
 	}
 
 	/*
