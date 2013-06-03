@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 import android.graphics.Point;
+import android.util.Log;
 
 import com.lzq.lianliankan2_3_3_v1_0.board.AbstractBoard;
 import com.lzq.lianliankan2_3_3_v1_0.board.FullBoard;
@@ -24,6 +25,7 @@ import com.lzq.lianliankan2_3_3_v1_0.model.Piece;
 public class GameServiceImpl implements GameService {
 
 	private Piece[][] pieces;
+	private Map<Integer, List<Point>> existImages = new HashMap<Integer, List<Point>>();
 	private GameConf config;
 
 	public GameServiceImpl(GameConf config) {
@@ -52,6 +54,27 @@ public class GameServiceImpl implements GameService {
 			break;
 		}
 		this.pieces = board.create(config);
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+				if (null != pieces[i][j]) {
+					if (null == existImages.get(pieces[i][j].getImage()
+							.getImageId())) {
+						List<Point> points = new ArrayList<Point>();
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+
+					} else {
+						List<Point> points = existImages.get(pieces[i][j]
+								.getImage().getImageId());
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+					}
+				}
+			}
+		}
+		Log.d("exitsImages", existImages.toString());
 	}
 
 	/*
@@ -84,7 +107,8 @@ public class GameServiceImpl implements GameService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.lzq.lianliankan2_3_3_v1_0.serivce.GameService#findPiece(float, float)
+	 * @see com.lzq.lianliankan2_3_3_v1_0.serivce.GameService#findPiece(float,
+	 * float)
 	 */
 	@Override
 	public Piece findPiece(float touchX, float touchY) {
@@ -123,9 +147,8 @@ public class GameServiceImpl implements GameService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.lzq.lianliankan2_3_3_v1_0.serivce.GameService#link(com.lzq.lianliankan2_3_3
-	 * .model.Piece, com.lzq.lianliankan2_3_3_v1_0.model.Piece)
+	 * @see com.lzq.lianliankan2_3_3_v1_0.serivce.GameService#link(com.lzq.
+	 * lianliankan2_3_3 .model.Piece, com.lzq.lianliankan2_3_3_v1_0.model.Piece)
 	 */
 	@Override
 	public LinkInfo link(Piece p1, Piece p2) {
@@ -497,5 +520,10 @@ public class GameServiceImpl implements GameService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Map<Integer, List<Point>> getExistImages() {
+		return this.existImages;
 	}
 }

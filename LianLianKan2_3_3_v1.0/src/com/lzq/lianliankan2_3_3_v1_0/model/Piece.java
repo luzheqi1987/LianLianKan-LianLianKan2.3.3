@@ -3,8 +3,6 @@
  */
 package com.lzq.lianliankan2_3_3_v1_0.model;
 
-import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
-
 import android.graphics.Point;
 
 /**

@@ -1,11 +1,14 @@
 package com.lzq.lianliankan2_3_3_v1_0.activity;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -135,6 +138,7 @@ public class LianLianKanActivity extends Activity {
 
 	private void gameViewTouchDown(MotionEvent event) {
 		Piece[][] pieces = gameService.getPieces();
+		Map<Integer, List<Point>> existImages = gameService.getExistImages();
 		float touchX = event.getX();
 		float touchY = event.getY();
 		Piece currentPiece = gameService.findPiece(touchX, touchY);
@@ -156,7 +160,8 @@ public class LianLianKanActivity extends Activity {
 				this.selected = currentPiece;
 				this.gameView.postInvalidate();
 			} else {
-				handleSuccessLink(linkInfo, this.selected, currentPiece, pieces);
+				handleSuccessLink(linkInfo, this.selected, currentPiece,
+						pieces, existImages);
 			}
 		}
 	}
@@ -195,12 +200,37 @@ public class LianLianKanActivity extends Activity {
 	}
 
 	private void handleSuccessLink(LinkInfo linkInfo, Piece prePiece,
-			Piece currentPiece, Piece[][] pieces) {
+			Piece currentPiece, Piece[][] pieces,
+			Map<Integer, List<Point>> existImages) {
 		this.gameView.setLinkInfo(linkInfo);
 		this.gameView.setSelectedPiece(null);
 		this.gameView.postInvalidate();
 		pieces[prePiece.getIndexX()][prePiece.getIndexY()] = null;
 		pieces[currentPiece.getIndexX()][currentPiece.getIndexY()] = null;
+
+		List<Point> points = existImages.get(prePiece.getImage().getImageId());
+		Point p1 = null;
+		Point p2 = null;
+
+		for (int i = 0; i < points.size(); i++) {
+			Point point = points.get(i);
+			if (point.x == prePiece.getIndexX()
+					&& point.y == prePiece.getIndexY()) {
+				p1 = point;
+			} else if (point.x == currentPiece.getIndexX()
+					&& point.y == currentPiece.getIndexY()) {
+				p2 = point;
+			}
+		}
+		if (null != p1 && null != p2) {
+			points.remove(p1);
+			points.remove(p2);
+			if (points.isEmpty()) {
+				existImages.remove(prePiece.getImage().getImageId());
+			} else {
+				existImages.put(prePiece.getImage().getImageId(), points);
+			}
+		}
 
 		this.selected = null;
 		soundPool.play(dis, 1, 1, 0, 0, 1);

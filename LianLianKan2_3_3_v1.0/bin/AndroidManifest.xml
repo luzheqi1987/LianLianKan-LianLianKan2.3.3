@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.LianLianKanActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.LianLianKanActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
