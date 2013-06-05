@@ -19,10 +19,16 @@ public interface GameService {
 	void start();
 
 	Piece[][] getPieces();
-	
+
 	Map<Integer, List<Point>> getExistImages();
 
+	void setExistImages(Map<Integer, List<Point>> existImages);
+	
+	void shufflePieces();
+
 	boolean hasPieces();
+	
+	boolean checkCoupleExist();
 
 	Piece findPiece(float touchX, float touchY);
 

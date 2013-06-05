@@ -4,14 +4,15 @@
 package com.lzq.lianliankan2_3_3_v1_0.conf;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 /**
  * @author Administrator
  * 
  */
 public class GameConf {
-	public static final int PIECE_WIDTH = 60;
-	public static final int PIECE_HEIGHT = 60;
+	public static int PIECE_WIDTH = 40;
+	public static int PIECE_HEIGHT = 40;
 	public static int DEFAULT_TIME = 1000;
 	private int beginImageX;
 	private int beginImageY;
@@ -21,12 +22,19 @@ public class GameConf {
 	private Context context;
 
 	public GameConf(int xSize, int ySize, int beginImageX, int beginImageY,
-			long gameTime, Context context) {
+			long gameTime, int dpi, Context context) {
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.beginImageX = beginImageX;
 		this.beginImageY = beginImageY;
 		this.gameTime = gameTime;
+		if (160 == dpi) {
+			PIECE_WIDTH = 40;
+			PIECE_HEIGHT = 40;
+		} else if (240 == dpi) {
+			PIECE_WIDTH = 60;
+			PIECE_HEIGHT = 60;
+		}
 		this.context = context;
 	}
 

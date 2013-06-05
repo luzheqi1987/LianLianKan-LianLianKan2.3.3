@@ -14,6 +14,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -73,7 +74,16 @@ public class LianLianKanActivity extends Activity {
 	}
 
 	private void init() {
-		config = new GameConf(7, 8, 1, 9, 100000, this);
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		float density = dm.density; // ÆÁÄ»ÃÜ¶È£¨ÏñËØ±ÈÀı£º0.75/1.0/1.5/2.0£©
+		int densityDPI = dm.densityDpi; // ÆÁÄ»ÃÜ¶È£¨Ã¿´çÏñËØ£º120/160/240/320£©
+		density = dm.density; // ÆÁÄ»ÃÜ¶È£¨ÏñËØ±ÈÀı£º0.75/1.0/1.5/2.0£©
+		densityDPI = dm.densityDpi; // ÆÁÄ»ÃÜ¶È£¨Ã¿´çÏñËØ£º120/160/240/320£©
+		Log.d("DisplayMetrics", "density=" + density + "; densityDPI="
+				+ densityDPI);
+
+		config = new GameConf(7, 8, 1, 9, 100000, densityDPI, this);
 		gameView = (GameView) findViewById(R.id.gameview);
 		timeTextView = (TextView) findViewById(R.id.timeText);
 		startButton = (Button) findViewById(R.id.startButton);

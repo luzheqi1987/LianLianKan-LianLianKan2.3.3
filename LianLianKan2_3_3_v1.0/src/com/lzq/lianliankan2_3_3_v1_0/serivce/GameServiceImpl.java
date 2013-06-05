@@ -4,7 +4,9 @@
 package com.lzq.lianliankan2_3_3_v1_0.serivce;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -54,27 +56,7 @@ public class GameServiceImpl implements GameService {
 			break;
 		}
 		this.pieces = board.create(config);
-		for (int i = 0; i < pieces.length; i++) {
-			for (int j = 0; j < pieces[i].length; j++) {
-				if (null != pieces[i][j]) {
-					if (null == existImages.get(pieces[i][j].getImage()
-							.getImageId())) {
-						List<Point> points = new ArrayList<Point>();
-						points.add(new Point(i, j));
-						existImages.put(pieces[i][j].getImage().getImageId(),
-								points);
-
-					} else {
-						List<Point> points = existImages.get(pieces[i][j]
-								.getImage().getImageId());
-						points.add(new Point(i, j));
-						existImages.put(pieces[i][j].getImage().getImageId(),
-								points);
-					}
-				}
-			}
-		}
-		Log.d("exitsImages", existImages.toString());
+		createExistImages();
 	}
 
 	/*
@@ -144,6 +126,40 @@ public class GameServiceImpl implements GameService {
 		return index;
 	}
 
+	public boolean checkCoupleExist() {
+		for (Integer key : existImages.keySet()) {
+			List<Point> points = existImages.get(key);
+			for (int i = 0; i < points.size(); i++) {
+				Point point1 = points.get(i);
+				Piece piece1 = getPieceFromPoint(point1);
+				for (int j = i + 1; j < points.size(); j++) {
+					Point point2 = points.get(j);
+					Piece piece2 = getPieceFromPoint(point2);
+					if (null != piece1 && null != piece2) {
+						LinkInfo info = link(piece1, piece2);
+						if (null != info) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private Piece getPieceFromPoint(Point point) {
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+
+				if (null != pieces[i][j] && pieces[i][j].getIndexX() == point.x
+						&& pieces[i][j].getIndexY() == point.y) {
+					return pieces[i][j];
+				}
+			}
+		}
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -207,7 +223,7 @@ public class GameServiceImpl implements GameService {
 
 	private boolean isYBlock(Point p1, Point p2, int pieceHeight) {
 		if (p2.y < p1.y) {
-			return isXBlock(p2, p1, pieceHeight);
+			return isYBlock(p2, p1, pieceHeight);
 		}
 		for (int i = p1.y + pieceHeight; i < p2.y; i = i + pieceHeight) {
 			if (hasPiece(p1.x, i)) {
@@ -525,5 +541,67 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Map<Integer, List<Point>> getExistImages() {
 		return this.existImages;
+	}
+
+	@Override
+	public void setExistImages(Map<Integer, List<Point>> existImages) {
+		this.existImages = existImages;
+	}
+
+	@Override
+	public void shufflePieces() {
+		List<Piece> pieceList = new ArrayList<Piece>();
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+				if (null != pieces[i][j]) {
+					pieceList.add(pieces[i][j]);
+				}
+			}
+		}
+		Collections.shuffle(pieceList);
+		Piece[][] newPieces = new Piece[pieces.length][pieces[0].length];
+		Iterator<Piece> itPiece = pieceList.iterator();
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+				if (null != pieces[i][j]) {
+					Piece oldPiece = itPiece.next();
+					Piece piece = new Piece(i, j);
+					piece.setImage(oldPiece.getImage());
+					piece.setBeginX(piece.getIndexX()
+							* oldPiece.getImage().getImage().getWidth()
+							+ config.getBeginImageX());
+					piece.setBeginY(piece.getIndexY()
+							* oldPiece.getImage().getImage().getHeight()
+							+ config.getBeginImageY());
+					newPieces[i][j] = piece;
+				}
+			}
+		}
+		pieces = newPieces;
+		createExistImages();
+	}
+	
+	private void createExistImages(){
+		existImages.clear();
+		for (int i = 0; i < pieces.length; i++) {
+			for (int j = 0; j < pieces[i].length; j++) {
+				if (null != pieces[i][j]) {
+					if (null == existImages.get(pieces[i][j].getImage()
+							.getImageId())) {
+						List<Point> points = new ArrayList<Point>();
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+
+					} else {
+						List<Point> points = existImages.get(pieces[i][j]
+								.getImage().getImageId());
+						points.add(new Point(i, j));
+						existImages.put(pieces[i][j].getImage().getImageId(),
+								points);
+					}
+				}
+			}
+		}
 	}
 }

@@ -23,7 +23,7 @@ public class Piece {
 
 	public boolean isSameImage(Piece other) {
 		if (null == image) {
-			if (null != other.getImage()) {
+			if (null == other.getImage()) {
 				return false;
 			}
 		}

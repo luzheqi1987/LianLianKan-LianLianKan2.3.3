@@ -59,7 +59,7 @@ public class GameView extends View {
 		}
 		Piece[][] pieces = gameService.getPieces();
 
-		if (pieces != null) {
+		if (null != pieces) {
 			for (int i = 0; i < pieces.length; i++) {
 				for (int j = 0; j < pieces[i].length; j++) {
 					if (null != pieces[i][j]) {
@@ -78,6 +78,12 @@ public class GameView extends View {
 			canvas.drawBitmap(this.selectImage, this.selectedPiece.getBeginX(),
 					this.selectedPiece.getBeginY(), null);
 		}
+
+		while (null == this.linkInfo && null != pieces
+				&& gameService.hasPieces() && !gameService.checkCoupleExist()) {
+			gameService.shufflePieces();
+		}
+		this.postInvalidate();
 	}
 
 	private void drawLine(LinkInfo linkInfo, Canvas canvas) {
