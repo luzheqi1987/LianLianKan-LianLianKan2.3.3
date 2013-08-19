@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.graphics.Point;
-import android.util.Log;
 
 import com.lzq.lianliankan2_3_3_v1_0.board.AbstractBoard;
 import com.lzq.lianliankan2_3_3_v1_0.board.FullBoard;
+import com.lzq.lianliankan2_3_3_v1_0.board.HorizontalBoard;
+import com.lzq.lianliankan2_3_3_v1_0.board.VerticalBoard;
 import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 import com.lzq.lianliankan2_3_3_v1_0.model.LinkInfo;
 import com.lzq.lianliankan2_3_3_v1_0.model.Piece;
@@ -27,6 +29,7 @@ import com.lzq.lianliankan2_3_3_v1_0.model.Piece;
 public class GameServiceImpl implements GameService {
 
 	private Piece[][] pieces;
+	@SuppressLint("UseSparseArrays")
 	private Map<Integer, List<Point>> existImages = new HashMap<Integer, List<Point>>();
 	private GameConf config;
 
@@ -46,10 +49,10 @@ public class GameServiceImpl implements GameService {
 		int index = random.nextInt(4);
 		switch (index) {
 		case 1:
-			board = new FullBoard();
+			board = new VerticalBoard();
 			break;
 		case 2:
-			board = new FullBoard();
+			board = new HorizontalBoard();
 			break;
 		default:
 			board = new FullBoard();
@@ -127,6 +130,14 @@ public class GameServiceImpl implements GameService {
 	}
 
 	public boolean checkCoupleExist() {
+		if (null == getCouple()) {
+			return false;
+		}
+		return true;
+	}
+
+	public Piece[] getCouple() {
+		Piece[] pieces = new Piece[2];
 		for (Integer key : existImages.keySet()) {
 			List<Point> points = existImages.get(key);
 			for (int i = 0; i < points.size(); i++) {
@@ -138,13 +149,15 @@ public class GameServiceImpl implements GameService {
 					if (null != piece1 && null != piece2) {
 						LinkInfo info = link(piece1, piece2);
 						if (null != info) {
-							return true;
+							pieces[0] = piece1;
+							pieces[1] = piece2;
+							return pieces;
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	private Piece getPieceFromPoint(Point point) {
@@ -580,8 +593,9 @@ public class GameServiceImpl implements GameService {
 		pieces = newPieces;
 		createExistImages();
 	}
-	
-	private void createExistImages(){
+
+	@Override
+	public void createExistImages() {
 		existImages.clear();
 		for (int i = 0; i < pieces.length; i++) {
 			for (int j = 0; j < pieces[i].length; j++) {

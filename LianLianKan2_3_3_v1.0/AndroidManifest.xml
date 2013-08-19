@@ -15,12 +15,46 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.lzq.lianliankan2_3_3_v1_0.activity.LianLianKanActivity"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait" >
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.StartActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.MakePictureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/crop_label" >
+            <intent-filter android:label="@string/crop_label" >
+                <action android:name="com.android.camera.action.CROP" />
+
+                <data android:mimeType="image/*" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.ALTERNATIVE" />
+                <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.ListCropPicturesActivity"
+            android:label="@string/title_activity_list_crop_pictures" >
+        </activity>
+        <activity
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.StageSelectActivity"
+            android:label="@string/title_activity_stage_select" >
         </activity>
     </application>
 

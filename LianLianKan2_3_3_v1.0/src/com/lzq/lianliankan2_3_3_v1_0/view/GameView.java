@@ -32,6 +32,10 @@ public class GameView extends View {
 	private LinkInfo linkInfo;
 	private Paint paint;
 	private Bitmap selectImage;
+	private Piece firstPiece;
+	private Piece secondPiece;
+	private int stage = -1;
+	private Piece[] helpPieces;
 
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -74,6 +78,17 @@ public class GameView extends View {
 			drawLine(this.linkInfo, canvas);
 			this.linkInfo = null;
 		}
+
+		// if (null != firstPiece && null != secondPiece) {
+		// moveLeft();
+		// }
+
+		if (null != helpPieces) {
+			canvas.drawBitmap(this.selectImage, this.helpPieces[0].getBeginX(),
+					this.helpPieces[0].getBeginY(), null);
+			canvas.drawBitmap(this.selectImage, this.helpPieces[1].getBeginX(),
+					this.helpPieces[1].getBeginY(), null);
+		}
 		if (null != this.selectedPiece) {
 			canvas.drawBitmap(this.selectImage, this.selectedPiece.getBeginX(),
 					this.selectedPiece.getBeginY(), null);
@@ -84,6 +99,98 @@ public class GameView extends View {
 			gameService.shufflePieces();
 		}
 		this.postInvalidate();
+	}
+
+	public void move() {
+		switch (stage) {
+		case 2:
+			moveLeft();
+			break;
+		case 3:
+			moveRight();
+			break;
+		default:
+			noMove();
+		}
+	}
+
+	public void helpCouples() {
+		selectedPiece = null;
+		helpPieces = gameService.getCouple();
+		this.invalidate();
+	}
+
+	private void noMove() {
+		Piece[][] pieces = gameService.getPieces();
+		pieces[firstPiece.getIndexX()][firstPiece.getIndexY()] = null;
+		pieces[secondPiece.getIndexX()][secondPiece.getIndexY()] = null;
+		firstPiece = null;
+		secondPiece = null;
+		gameService.createExistImages();
+	}
+
+	private void moveLeft() {
+		Piece[][] pieces = gameService.getPieces();
+		int i, j;
+
+		if (firstPiece.getIndexX() < secondPiece.getIndexX()) {
+			Piece tmp = firstPiece;
+			firstPiece = secondPiece;
+			secondPiece = tmp;
+		}
+		for (i = firstPiece.getIndexX(), j = firstPiece.getIndexY(); i < pieces.length - 1; i++) {
+			if (null != pieces[i + 1][j]) {
+				pieces[i][j].setImage(pieces[i + 1][j].getImage());
+			} else {
+				break;
+			}
+		}
+		pieces[i][j] = null;
+
+		for (i = secondPiece.getIndexX(), j = secondPiece.getIndexY(); i < pieces.length - 1; i++) {
+			if (null != pieces[i + 1][j]) {
+				pieces[i][j].setImage(pieces[i + 1][j].getImage());
+			} else {
+				break;
+			}
+		}
+		pieces[i][j] = null;
+		firstPiece = null;
+		secondPiece = null;
+		gameService.createExistImages();
+
+	}
+
+	private void moveRight() {
+		Piece[][] pieces = gameService.getPieces();
+		int i, j;
+
+		if (firstPiece.getIndexX() > secondPiece.getIndexX()) {
+			Piece tmp = firstPiece;
+			firstPiece = secondPiece;
+			secondPiece = tmp;
+		}
+		for (i = firstPiece.getIndexX(), j = firstPiece.getIndexY(); i > 0; i--) {
+			if (null != pieces[i - 1][j]) {
+				pieces[i][j].setImage(pieces[i - 1][j].getImage());
+			} else {
+				break;
+			}
+		}
+		pieces[i][j] = null;
+
+		for (i = secondPiece.getIndexX(), j = secondPiece.getIndexY(); i > 0; i--) {
+			if (null != pieces[i - 1][j]) {
+				pieces[i][j].setImage(pieces[i - 1][j].getImage());
+			} else {
+				break;
+			}
+		}
+		pieces[i][j] = null;
+		firstPiece = null;
+		secondPiece = null;
+		gameService.createExistImages();
+
 	}
 
 	private void drawLine(LinkInfo linkInfo, Canvas canvas) {
@@ -98,10 +205,36 @@ public class GameView extends View {
 
 	public void setSelectedPiece(Piece selectedPiece) {
 		this.selectedPiece = selectedPiece;
+		helpPieces = null;
 	}
 
 	public void startGame() {
 		this.gameService.start();
 		this.postInvalidate();
 	}
+
+	public Piece getFirstPiece() {
+		return firstPiece;
+	}
+
+	public void setFirstPiece(Piece firstPiece) {
+		this.firstPiece = firstPiece;
+	}
+
+	public Piece getSecondPiece() {
+		return secondPiece;
+	}
+
+	public void setSecondPiece(Piece secondPiece) {
+		this.secondPiece = secondPiece;
+	}
+
+	public int getStage() {
+		return stage;
+	}
+
+	public void setStage(int stage) {
+		this.stage = stage;
+	}
+
 }

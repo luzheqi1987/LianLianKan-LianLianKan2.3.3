@@ -18,15 +18,17 @@ public class HorizontalBoard extends AbstractBoard {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.lzq.lianliankan2_3_3_v1_0.board.AbstractBoard#createPieces(com.lzq.
-	 * lianliankan2_3_3.conf.GameConf, com.lzq.lianliankan2_3_3_v1_0.model.Piece[][])
+	 * @see
+	 * com.lzq.lianliankan2_3_3_v1_0.board.AbstractBoard#createPieces(com.lzq.
+	 * lianliankan2_3_3.conf.GameConf,
+	 * com.lzq.lianliankan2_3_3_v1_0.model.Piece[][])
 	 */
 	@Override
 	protected List<Piece> createPieces(GameConf config, Piece[][] pieces) {
 		List<Piece> notNullPieces = new ArrayList<Piece>();
 		for (int i = 1; i < pieces.length; i++) {
 			for (int j = 1; j < pieces[i].length; j++) {
-				if (j >> 1 == 0) {
+				if (j % 2 == 0) {
 					Piece piece = new Piece(i, j);
 					notNullPieces.add(piece);
 				}

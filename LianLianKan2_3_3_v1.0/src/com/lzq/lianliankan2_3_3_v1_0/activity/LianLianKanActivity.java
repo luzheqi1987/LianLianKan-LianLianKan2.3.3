@@ -8,13 +8,14 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -29,13 +30,14 @@ import com.lzq.lianliankan2_3_3_v1_0.model.LinkInfo;
 import com.lzq.lianliankan2_3_3_v1_0.model.Piece;
 import com.lzq.lianliankan2_3_3_v1_0.serivce.GameService;
 import com.lzq.lianliankan2_3_3_v1_0.serivce.GameServiceImpl;
+import com.lzq.lianliankan2_3_3_v1_0.utils.ImageUtil;
 import com.lzq.lianliankan2_3_3_v1_0.view.GameView;
 
 public class LianLianKanActivity extends Activity {
 	private GameConf config;
 	private GameService gameService;
 	private GameView gameView;
-	private Button startButton;
+	// private Button startButton;
 	private TextView timeTextView;
 	private AlertDialog.Builder lostDialog;
 	private AlertDialog.Builder successDialog;
@@ -44,10 +46,21 @@ public class LianLianKanActivity extends Activity {
 	private boolean isPlaying;
 	SoundPool soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 8);
 	int dis;
+	int plam;
+	int plamPlay;
+	int xu;
+	int xuPlay;
 	private Piece selected = null;
+	private float volum = 0.1f;
+	private boolean pictureRefresh = false;
+	private int stage = -1;
+	SharedPreferences sharedPreferences = null;
+	SharedPreferences.Editor editor = null;
+	String keyHead = "stage";
+	private Button helpBtn = null;
+	private int helpNum = 3;
 
 	private Handler handler = new Handler() {
-
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -58,12 +71,12 @@ public class LianLianKanActivity extends Activity {
 					stopTimer();
 					isPlaying = false;
 					lostDialog.show();
+					xuPlay = soundPool.play(xu, volum, volum, 0, 0, 1);
 					return;
 				}
 				break;
 			}
 		}
-
 	};
 
 	@Override
@@ -74,29 +87,47 @@ public class LianLianKanActivity extends Activity {
 	}
 
 	private void init() {
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
-		int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
-		density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
-		densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
-		Log.d("DisplayMetrics", "density=" + density + "; densityDPI="
-				+ densityDPI);
-
-		config = new GameConf(7, 8, 1, 9, 100000, densityDPI, this);
+		config = new GameConf(9, 11, 0, 0, 100000, this);
 		gameView = (GameView) findViewById(R.id.gameview);
 		timeTextView = (TextView) findViewById(R.id.timeText);
-		startButton = (Button) findViewById(R.id.startButton);
+		helpBtn = (Button) findViewById(R.id.helpbtn);
+		helpBtn.setText("Help " + helpNum);
+		// startButton = (Button) findViewById(R.id.startButton);
+		sharedPreferences = getSharedPreferences("linkproperty", MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 		dis = soundPool.load(this, R.raw.dis, 1);
+		plam = soundPool.load(this, R.raw.plam, 1);
+		xu = soundPool.load(this, R.raw.xu, 1);
 		gameService = new GameServiceImpl(this.config);
 		gameView.setGameService(gameService);
-		startButton.setOnClickListener(new View.OnClickListener() {
+		Intent it = getIntent();
+		volum = it.getFloatExtra("volum", 0.1f);
+		pictureRefresh = it.getBooleanExtra("pictureRefresh", false);
+		stage = it.getIntExtra("stage", -1);
+		gameView.setStage(stage);
 
-			@Override
-			public void onClick(View v) {
-				startGame(GameConf.DEFAULT_TIME);
-			}
-		});
+		if (pictureRefresh) {
+			ImageUtil.refreshImageValues();
+		}
+
+		if (ImageUtil.isEmpty()) {
+			createDialog("No pictures", "没有图片", -1).setPositiveButton("确定",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					}).show();
+		} else {
+			startGame(GameConf.DEFAULT_TIME);
+		}
+		// startButton.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// startGame(GameConf.DEFAULT_TIME);
+		// }
+		// });
 		this.gameView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -119,17 +150,34 @@ public class LianLianKanActivity extends Activity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						soundPool.stop(xuPlay);
 						startGame(GameConf.DEFAULT_TIME);
 					}
-				});
+				}).setCancelable(false);
+
 		successDialog = createDialog("Success", "游戏胜利！重新开始", R.drawable.success)
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						startGame(GameConf.DEFAULT_TIME);
+						soundPool.stop(plamPlay);
+						finish();
 					}
-				});
+				}).setCancelable(false);
+		helpBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (helpNum >= 1) {
+					selected = null;
+					gameView.helpCouples();
+					helpNum--;
+					helpBtn.setText("Help " + helpNum);
+				}
+				if (helpNum < 1) {
+					helpBtn.setEnabled(false);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -180,13 +228,6 @@ public class LianLianKanActivity extends Activity {
 		this.gameView.postInvalidate();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.lian_lian_kan, menu);
-		return true;
-	}
-
 	private void startGame(int gameTime) {
 		if (null != this.timer) {
 			stopTimer();
@@ -215,39 +256,48 @@ public class LianLianKanActivity extends Activity {
 		this.gameView.setLinkInfo(linkInfo);
 		this.gameView.setSelectedPiece(null);
 		this.gameView.postInvalidate();
-		pieces[prePiece.getIndexX()][prePiece.getIndexY()] = null;
-		pieces[currentPiece.getIndexX()][currentPiece.getIndexY()] = null;
+		this.gameView.setFirstPiece(prePiece);
+		this.gameView.setSecondPiece(currentPiece);
+		this.gameView.move();
+		this.gameView.invalidate();
 
-		List<Point> points = existImages.get(prePiece.getImage().getImageId());
-		Point p1 = null;
-		Point p2 = null;
-
-		for (int i = 0; i < points.size(); i++) {
-			Point point = points.get(i);
-			if (point.x == prePiece.getIndexX()
-					&& point.y == prePiece.getIndexY()) {
-				p1 = point;
-			} else if (point.x == currentPiece.getIndexX()
-					&& point.y == currentPiece.getIndexY()) {
-				p2 = point;
-			}
-		}
-		if (null != p1 && null != p2) {
-			points.remove(p1);
-			points.remove(p2);
-			if (points.isEmpty()) {
-				existImages.remove(prePiece.getImage().getImageId());
-			} else {
-				existImages.put(prePiece.getImage().getImageId(), points);
-			}
-		}
-
+		// pieces[prePiece.getIndexX()][prePiece.getIndexY()] = null;
+		// pieces[currentPiece.getIndexX()][currentPiece.getIndexY()] = null;
+		// List<Point> points =
+		// existImages.get(prePiece.getImage().getImageId());
+		// Point p1 = null;
+		// Point p2 = null;
+		//
+		// for (int i = 0; i < points.size(); i++) {
+		// Point point = points.get(i);
+		// if (point.x == prePiece.getIndexX()
+		// && point.y == prePiece.getIndexY()) {
+		// p1 = point;
+		// } else if (point.x == currentPiece.getIndexX()
+		// && point.y == currentPiece.getIndexY()) {
+		// p2 = point;
+		// }
+		// }
+		// if (null != p1 && null != p2) {
+		// points.remove(p1);
+		// points.remove(p2);
+		// if (points.isEmpty()) {
+		// existImages.remove(prePiece.getImage().getImageId());
+		// } else {
+		// existImages.put(prePiece.getImage().getImageId(), points);
+		// }
+		// }
 		this.selected = null;
-		soundPool.play(dis, 1, 1, 0, 0, 1);
+		soundPool.play(dis, volum, volum, 0, 0, 1);
 		if (!this.gameService.hasPieces()) {
 			this.successDialog.show();
+			plamPlay = soundPool.play(plam, volum, volum, 0, 0, 1);
 			stopTimer();
 			isPlaying = false;
+			if (!sharedPreferences.getBoolean(keyHead + stage, false)) {
+				editor.putBoolean(keyHead + stage, true);
+				editor.commit();
+			}
 		}
 	}
 
@@ -258,8 +308,10 @@ public class LianLianKanActivity extends Activity {
 	}
 
 	private void stopTimer() {
-		this.timer.cancel();
-		this.timer = null;
+		if (null != timer) {
+			this.timer.cancel();
+			this.timer = null;
+		}
 	}
 
 }

@@ -8,6 +8,13 @@
 package com.lzq.lianliankan2_3_3_v1_0;
 
 public final class R {
+    public static final class anim {
+        public static final int anmi=0x7f040000;
+        public static final int reverse=0x7f040001;
+    }
+    public static final class array {
+        public static final int months_abbreviated=0x7f080000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -17,63 +24,137 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
+        public static final int button_vertical_margin=0x7f060002;
+        public static final int button_vertical_top_margin=0x7f060003;
     }
     public static final class drawable {
-        public static final int button_selector=0x7f020000;
-        public static final int heart=0x7f020001;
-        public static final int ic_action_search=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int lost=0x7f020004;
-        public static final int p_1=0x7f020005;
-        public static final int p_10=0x7f020006;
-        public static final int p_11=0x7f020007;
-        public static final int p_12=0x7f020008;
-        public static final int p_13=0x7f020009;
-        public static final int p_14=0x7f02000a;
-        public static final int p_15=0x7f02000b;
-        public static final int p_16=0x7f02000c;
-        public static final int p_17=0x7f02000d;
-        public static final int p_18=0x7f02000e;
-        public static final int p_19=0x7f02000f;
-        public static final int p_2=0x7f020010;
-        public static final int p_20=0x7f020011;
-        public static final int p_3=0x7f020012;
-        public static final int p_4=0x7f020013;
-        public static final int p_5=0x7f020014;
-        public static final int p_6=0x7f020015;
-        public static final int p_7=0x7f020016;
-        public static final int p_8=0x7f020017;
-        public static final int p_9=0x7f020018;
-        public static final int pause=0x7f020019;
-        public static final int play=0x7f02001a;
-        public static final int room=0x7f02001b;
-        public static final int selected=0x7f02001c;
-        public static final int start=0x7f02001d;
-        public static final int start_down=0x7f02001e;
-        public static final int stop=0x7f02001f;
-        public static final int success=0x7f020020;
+        public static final int appwidget_bg=0x7f020000;
+        public static final int button_picture_management=0x7f020001;
+        public static final int button_selector=0x7f020002;
+        public static final int button_set=0x7f020003;
+        public static final int button_start=0x7f020004;
+        public static final int camera_crop_height=0x7f020005;
+        public static final int camera_crop_width=0x7f020006;
+        public static final int heart=0x7f020007;
+        public static final int ic_action_search=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int indicator_autocrop=0x7f02000a;
+        public static final int kkl=0x7f02000b;
+        public static final int lost=0x7f02000c;
+        public static final int makepic=0x7f02000d;
+        public static final int makepic_down=0x7f02000e;
+        public static final int p_1=0x7f02000f;
+        public static final int p_10=0x7f020010;
+        public static final int p_11=0x7f020011;
+        public static final int p_12=0x7f020012;
+        public static final int p_13=0x7f020013;
+        public static final int p_14=0x7f020014;
+        public static final int p_15=0x7f020015;
+        public static final int p_16=0x7f020016;
+        public static final int p_17=0x7f020017;
+        public static final int p_18=0x7f020018;
+        public static final int p_19=0x7f020019;
+        public static final int p_2=0x7f02001a;
+        public static final int p_20=0x7f02001b;
+        public static final int p_3=0x7f02001c;
+        public static final int p_4=0x7f02001d;
+        public static final int p_5=0x7f02001e;
+        public static final int p_6=0x7f02001f;
+        public static final int p_7=0x7f020020;
+        public static final int p_8=0x7f020021;
+        public static final int p_9=0x7f020022;
+        public static final int pause=0x7f020023;
+        public static final int photo_inner=0x7f020024;
+        public static final int picture_management=0x7f020025;
+        public static final int picture_management_down=0x7f020026;
+        public static final int play=0x7f020027;
+        public static final int room=0x7f020028;
+        public static final int selected=0x7f020029;
+        public static final int set1=0x7f02002a;
+        public static final int set_down1=0x7f02002b;
+        public static final int stage_1_black=0x7f02002c;
+        public static final int stage_1_gray=0x7f02002d;
+        public static final int stage_2_black=0x7f02002e;
+        public static final int stage_2_gray=0x7f02002f;
+        public static final int stage_3_black=0x7f020030;
+        public static final int stage_3_gray=0x7f020031;
+        public static final int start=0x7f020032;
+        public static final int start1=0x7f020033;
+        public static final int start_down=0x7f020034;
+        public static final int start_down1=0x7f020035;
+        public static final int stop=0x7f020036;
+        public static final int success=0x7f020037;
     }
     public static final class id {
-        public static final int action_settings=0x7f090003;
-        public static final int gameview=0x7f090000;
-        public static final int startButton=0x7f090001;
-        public static final int timeText=0x7f090002;
+        public static final int action_settings=0x7f0b000e;
+        public static final int createcroppicture=0x7f0b000f;
+        public static final int croppicture=0x7f0b0004;
+        public static final int discard=0x7f0b0006;
+        public static final int gameview=0x7f0b0000;
+        public static final int helpbtn=0x7f0b0002;
+        public static final int listcroppicture=0x7f0b0003;
+        public static final int liststages=0x7f0b0008;
+        public static final int makePicBtn=0x7f0b000b;
+        public static final int onecroppicture=0x7f0b000d;
+        public static final int save=0x7f0b0005;
+        public static final int setBtn=0x7f0b000c;
+        public static final int startBtn=0x7f0b000a;
+        public static final int timeText=0x7f0b0001;
+        public static final int title=0x7f0b0009;
+        public static final int volum=0x7f0b0007;
     }
     public static final class layout {
         public static final int activity_lian_lian_kan=0x7f030000;
+        public static final int activity_list_crop_pictures=0x7f030001;
+        public static final int activity_make_picture=0x7f030002;
+        public static final int activity_set=0x7f030003;
+        public static final int activity_stage_select=0x7f030004;
+        public static final int activity_start=0x7f030005;
+        public static final int one_crop_picture=0x7f030006;
     }
     public static final class menu {
-        public static final int lian_lian_kan=0x7f080000;
+        public static final int lian_lian_kan=0x7f0a0000;
+        public static final int list_crop_pictures=0x7f0a0001;
+        public static final int make_picture=0x7f0a0002;
+        public static final int stage_select=0x7f0a0003;
+        public static final int start=0x7f0a0004;
     }
     public static final class raw {
-        public static final int dis=0x7f040000;
+        public static final int dis=0x7f050000;
+        public static final int plam=0x7f050001;
+        public static final int xu=0x7f050002;
     }
     public static final class string {
-        public static final int action_settings=0x7f060001;
-        public static final int app_name=0x7f060000;
-        public static final int hello_world=0x7f060002;
+        public static final int action_settings=0x7f070001;
+        public static final int app_name=0x7f070000;
+        /**  Button indicating that the cropped image should be reverted back to the original 
+         */
+        public static final int crop_discard_text=0x7f07000b;
+        /**  menu pick: crop the currently selected image 
+         */
+        public static final int crop_label=0x7f07000c;
+        public static final int crop_picture_make=0x7f070006;
+        /**  Button indicating that the cropped image should be saved 
+         */
+        public static final int crop_save_text=0x7f07000a;
+        public static final int hello_world=0x7f070002;
+        /**  Hint that appears when cropping an image with more than one face 
+         */
+        public static final int multiface_crop_help=0x7f070008;
+        /**  Toast/alert that the face detection is being run 
+         */
+        public static final int running_face_detection=0x7f070009;
+        /**  Toast/alert that the image is being saved to the SD card 
+         */
+        public static final int saving_image=0x7f07000d;
+        public static final int setting=0x7f070005;
+        public static final int title_activity_list_crop_pictures=0x7f07000e;
+        public static final int title_activity_make_picture=0x7f070007;
+        public static final int title_activity_stage_select=0x7f07000f;
+        public static final int title_activity_start=0x7f070003;
+        public static final int volum_set=0x7f070004;
     }
     public static final class style {
         /** 
@@ -97,10 +178,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f090001;
     }
 }
