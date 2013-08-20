@@ -29,6 +29,14 @@ import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 
 public class MenuActivity extends Activity {
 	public static final int LIST_MSG = 10;
+	public static final int MAX_STAGE = 3;
+	// public static final String PREFERENCES_KEY = "linkproperty";
+	// public static final String MAX_STAGE_KEY = "maxStage";
+	// public static final String VOLUM_KEY = "volum";
+	// public static final String PICTURE_REFRESH_KEY = "pictureRefresh";
+	// public static final String OK = "ok";
+	// public static final String CANCEL = "Cancel";
+
 	Button makePictureBtn = null;
 	Button startBtn = null;
 	Button setBtn = null;
@@ -65,36 +73,26 @@ public class MenuActivity extends Activity {
 
 		int systemVolum = aManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-		sharedPreferences = getSharedPreferences("linkproperty", MODE_PRIVATE);
-		editor = sharedPreferences.edit();
-
-		currentVolum = sharedPreferences.getInt("volum", -1);
-		if (-1 == currentVolum) {
-			currentVolum = systemVolum;
-			editor.putInt("volum", currentVolum);
-			editor.commit();
-			volumBar.setProgress(currentVolum);
-		} else {
-			volumBar.setProgress(currentVolum);
-		}
-
-		if (-1 == sharedPreferences.getInt("maxStage", -1)) {
-			editor.putInt("maxStage", 3);
-			editor.commit();
-		}
+		initSharedPreferences(systemVolum);
 
 		final AlertDialog settingDialog = new AlertDialog.Builder(
-				MenuActivity.this).setTitle(getString(R.string.setting))
+				MenuActivity.this)
+				.setTitle(getString(R.string.setting))
 				.setView(setLayout)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getString(R.string.dialog_ok),
+						new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						currentVolum = volumBar.getProgress();
-						editor.putInt("volum", currentVolum);
-						editor.commit();
-					}
-				}).setNegativeButton("Cancel", null).create();
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								currentVolum = volumBar.getProgress();
+								editor.putInt(getString(R.string.volum_key),
+										currentVolum);
+								editor.commit();
+							}
+						})
+				.setNegativeButton(getString(R.string.dialog_cancel), null)
+				.create();
 
 		startBtn.setOnClickListener(new OnClickListener() {
 
@@ -102,8 +100,10 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(MenuActivity.this,
 						StagesActivity.class);
-				intent.putExtra("volum", (float) currentVolum / (float) 100);
-				intent.putExtra("pictureRefresh", pictureRefresh);
+				intent.putExtra(getString(R.string.volum_key),
+						(float) currentVolum / (float) 100);
+				intent.putExtra(getString(R.string.picture_refresh_key),
+						pictureRefresh);
 				pictureRefresh = false;
 				startActivity(intent);
 			}
@@ -154,10 +154,36 @@ public class MenuActivity extends Activity {
 		}, 0, 1000);
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * @param systemVolum
+	 */
+	private void initSharedPreferences(int systemVolum) {
+		sharedPreferences = getSharedPreferences(
+				getString(R.string.preferences_key), MODE_PRIVATE);
+		editor = sharedPreferences.edit();
+
+		currentVolum = sharedPreferences.getInt(getString(R.string.volum_key),
+				-1);
+		if (-1 == currentVolum) {
+			currentVolum = systemVolum;
+			editor.putInt(getString(R.string.volum_key), currentVolum);
+			editor.commit();
+			volumBar.setProgress(currentVolum);
+		} else {
+			volumBar.setProgress(currentVolum);
+		}
+
+		if (-1 == sharedPreferences.getInt(getString(R.string.max_stage_key),
+				-1)) {
+			editor.putInt(getString(R.string.max_stage_key), MAX_STAGE);
+			editor.commit();
+		}
+	}
+
 	private void initGameConf() {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		@SuppressWarnings("unused")
 		float density = dm.density; // ÆÁÄ»ÃÜ¶È£¨ÏñËØ±ÈÀý£º0.75/1.0/1.5/2.0£©
 		int densityDPI = dm.densityDpi; // ÆÁÄ»ÃÜ¶È£¨Ã¿´çÏñËØ£º120/160/240/320£©
 		density = dm.density; // ÆÁÄ»ÃÜ¶È£¨ÏñËØ±ÈÀý£º0.75/1.0/1.5/2.0£©

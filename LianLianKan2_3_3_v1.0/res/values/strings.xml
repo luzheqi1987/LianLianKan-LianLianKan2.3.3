@@ -10,17 +10,47 @@
     <string name="crop_picture_make">新建</string>
     <string name="title_activity_make_picture">新增图片</string>
     <!-- Hint that appears when cropping an image with more than one face -->
-    <string name="multiface_crop_help">Tap a face to begin.</string>
+    <string name="multiface_crop_help">请点击一个头部</string>
     <!-- Toast/alert that the face detection is being run -->
-    <string name="running_face_detection">Please wait\u2026</string>
+    <string name="running_face_detection">请等待\u2026</string>
     <!-- Button indicating that the cropped image should be saved -->
-    <string name="crop_save_text">Save</string>
+    <string name="crop_save_text">保存</string>
     <!-- Button indicating that the cropped image should be reverted back to the original -->
-    <string name="crop_discard_text">Discard</string>
+    <string name="crop_discard_text">放弃</string>
     <!-- menu pick: crop the currently selected image -->
-    <string name="crop_label">图片剪切</string>
+    <string name="crop_label">剪切图片</string>
     <!-- Toast/alert that the image is being saved to the SD card -->
-    <string name="saving_image">Saving picture\u2026</string>
+    <string name="crop_pictures_label">显示图片</string>
+    <string name="saving_image">保存图片\u2026</string>
+    <string name="preferences_key">linkproperty</string>
+    <string name="max_stage_key">maxStage</string>
+    <string name="stage_key">stage</string>
+    <string name="volum_key">volum</string>
+    <string name="picture_refresh_key">pictureRefresh</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_yes">确定</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_delete">删除</string>
+    <string name="dialog_close">关闭</string>
+    <string name="base_file_name_key">baseFileName</string>
+    <string name="base_file_name">ci</string>
+    <string name="m_output_x_key">mOutputX</string>
+    <string name="m_output_y_key">mOutputY</string>
+    <string name="m_scale_key">mScale</string>
+    <string name="last_time_label">剩余时间：</string>
+    <string name="help_label">帮助</string>
+    <string name="no_picture_dialog_label">没有图片</string>
+    <string name="no_picture_dialog_message">没有图片，请创建</string>
+    <string name="lost_dialog_label">Lost</string>
+    <string name="lost_dialog_message">游戏失败！重新开始</string>
+    <string name="success_dialog_label">Success</string>
+    <string name="success_dialog_message">游戏胜利！</string>
+    <string name="null_message">null</string>
+    <string name="find_piece_label">findPiece</string>
+    <string name="stage_head">stage</string>
+    <string name="stage_picture_head">stage_</string>
+    <string name="stage_picture_black">_black</string>
+    <string name="stage_picture_gray">_gray</string>
 
     <string-array name="months_abbreviated">
         <item>Jan</item>

@@ -33,13 +33,16 @@ public class StagesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stage_select);
 		Field[] drawableFields = R.drawable.class.getFields();
-		sharedPreferences = getSharedPreferences("linkproperty", MODE_PRIVATE);
-		maxStage = sharedPreferences.getInt("maxStage", 1);
+		sharedPreferences = getSharedPreferences(
+				getString(R.string.preferences_key), MODE_PRIVATE);
+		maxStage = sharedPreferences.getInt(getString(R.string.max_stage_key),
+				1);
 		int i = 1;
 
 		try {
 			for (Field field : drawableFields) {
-				if (field.getName().startsWith("stage_")) {
+				if (field.getName().startsWith(
+						getString(R.string.stage_picture_head))) {
 					resourceValues.put(field.getName(),
 							field.getInt(R.drawable.class));
 				}
@@ -48,15 +51,20 @@ public class StagesActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		while (sharedPreferences.getBoolean(keyHead + i, false)) {
+		while (sharedPreferences.getBoolean(getString(R.string.stage_head) + i,
+				false)) {
 			i++;
 		}
 		List<Integer> listValues = new ArrayList<Integer>();
 		for (int j = 1; j <= maxStage; j++) {
 			if (j <= i) {
-				listValues.add(resourceValues.get("stage_" + j + "_black"));
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + j
+								+ getString(R.string.stage_picture_black)));
 			} else {
-				listValues.add(resourceValues.get("stage_" + j + "_gray"));
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + j
+								+ getString(R.string.stage_picture_gray)));
 			}
 		}
 
@@ -82,11 +90,14 @@ public class StagesActivity extends Activity {
 			Intent intent = new Intent(StagesActivity.this,
 					MainGameActivity.class);
 			Intent it = getIntent();
-			intent.putExtra("volum",
-					(float) sharedPreferences.getInt("volum", -1) / (float) 100);
-			intent.putExtra("pictureRefresh",
-					it.getBooleanExtra("pictureRefresh", false));
-			intent.putExtra("stage", position + 1);
+			intent.putExtra(
+					getString(R.string.volum_key),
+					(float) sharedPreferences.getInt(
+							getString(R.string.volum_key), -1) / (float) 100);
+			intent.putExtra(getString(R.string.picture_refresh_key), it
+					.getBooleanExtra(getString(R.string.picture_refresh_key),
+							false));
+			intent.putExtra(getString(R.string.stage_key), position + 1);
 			startActivity(intent);
 		}
 	}
@@ -94,15 +105,20 @@ public class StagesActivity extends Activity {
 	@Override
 	protected void onResume() {
 		int i = 1;
-		while (sharedPreferences.getBoolean(keyHead + i, false)) {
+		while (sharedPreferences.getBoolean(getString(R.string.stage_head) + i,
+				false)) {
 			i++;
 		}
 		List<Integer> listValues = new ArrayList<Integer>();
 		for (int j = 1; j <= maxStage; j++) {
 			if (j <= i) {
-				listValues.add(resourceValues.get("stage_" + j + "_black"));
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + j
+								+ getString(R.string.stage_picture_black)));
 			} else {
-				listValues.add(resourceValues.get("stage_" + j + "_gray"));
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + j
+								+ getString(R.string.stage_picture_gray)));
 			}
 		}
 

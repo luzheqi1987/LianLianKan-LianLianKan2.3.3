@@ -63,12 +63,12 @@ public class CropPicturesActivity extends Activity {
 			Bitmap bm = BitmapFactory.decodeFile(getFilesDir().toString() + "/"
 					+ f.getName());
 			showImg.setImageBitmap(bm);
-			Dialog dialog = new AlertDialog.Builder(
-					CropPicturesActivity.this) // 创建Dialog
+			Dialog dialog = new AlertDialog.Builder(CropPicturesActivity.this)
+					// 创建Dialog
 					// .setIcon(R.drawable.pic_m) // 设置显示图片
-					.setTitle("查看图片") // 设置标题
-					.setView(showImg) // 设置组件
-					.setPositiveButton("删除",
+					.setTitle(getString(R.string.crop_pictures_label))// 设置标题
+					.setView(showImg)// 设置组件
+					.setPositiveButton(getString(R.string.dialog_delete),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
@@ -77,7 +77,8 @@ public class CropPicturesActivity extends Activity {
 									refreshFiles();
 									gridView.invalidateViews();
 								}
-							}).setNegativeButton("关闭", // 设置取消按钮
+							})
+					.setNegativeButton(getString(R.string.dialog_close), // 设置取消按钮
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
@@ -110,9 +111,12 @@ public class CropPicturesActivity extends Activity {
 		case R.id.createcroppicture:
 			Intent intent = new Intent(CropPicturesActivity.this,
 					CropPictureActivity.class);
-			intent.putExtra("baseFileName", "ci");
-			intent.putExtra("mOutputX", GameConf.PIECE_WIDTH);
-			intent.putExtra("mOutputY", GameConf.PIECE_HEIGHT);
+			intent.putExtra(getString(R.string.base_file_name_key),
+					getString(R.string.base_file_name));
+			intent.putExtra(getString(R.string.m_output_x_key),
+					GameConf.PIECE_WIDTH);
+			intent.putExtra(getString(R.string.m_output_y_key),
+					GameConf.PIECE_HEIGHT);
 			startActivityForResult(intent, CROP_MSG);
 			break;
 		}
@@ -162,7 +166,7 @@ public class CropPicturesActivity extends Activity {
 		public long getItemId(int position) {
 			int id = -1;
 			File f = getFiles()[position];
-			if (f.getName().startsWith("ci")) {
+			if (f.getName().startsWith(getString(R.string.base_file_name))) {
 				id = Integer.valueOf(f.getName().split("[-|.]")[1]);
 			}
 			return id;

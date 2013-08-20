@@ -67,10 +67,10 @@ public class CropPictureActivity extends MonitoredActivity {
 
 		Intent srcIntent = getIntent();
 		Bundle extras = srcIntent.getExtras();
-		baseFileName = extras.getString("baseFileName");
-		mOutputX = extras.getInt("mOutputX");
-		mOutputY = extras.getInt("mOutputY");
-		mScale = extras.getBoolean("mScale", true);
+		baseFileName = extras.getString(getString(R.string.base_file_name_key));
+		mOutputX = extras.getInt(getString(R.string.m_output_x_key));
+		mOutputY = extras.getInt(getString(R.string.m_output_y_key));
+		mScale = extras.getBoolean(getString(R.string.m_scale_key), true);
 
 		Intent intent = new Intent();
 		intent.setType("image/*");

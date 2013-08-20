@@ -66,7 +66,8 @@ public class MainGameActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0x0123:
-				timeTextView.setText("剩余时间：" + gameTime);
+				timeTextView.setText(getString(R.string.last_time_label) + " "
+						+ gameTime);
 				gameTime--;
 				if (gameTime < 0) {
 					stopTimer();
@@ -92,9 +93,10 @@ public class MainGameActivity extends Activity {
 		gameView = (GameView) findViewById(R.id.gameview);
 		timeTextView = (TextView) findViewById(R.id.timeText);
 		helpBtn = (Button) findViewById(R.id.helpbtn);
-		helpBtn.setText("Help " + helpNum);
+		helpBtn.setText(getString(R.string.help_label) + " " + helpNum);
 		// startButton = (Button) findViewById(R.id.startButton);
-		sharedPreferences = getSharedPreferences("linkproperty", MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(
+				getString(R.string.preferences_key), MODE_PRIVATE);
 		editor = sharedPreferences.edit();
 		dis = soundPool.load(this, R.raw.dis, 1);
 		plam = soundPool.load(this, R.raw.plam, 1);
@@ -102,9 +104,10 @@ public class MainGameActivity extends Activity {
 		gameService = new GameServiceImpl(this.config);
 		gameView.setGameService(gameService);
 		Intent it = getIntent();
-		volum = it.getFloatExtra("volum", 0.1f);
-		pictureRefresh = it.getBooleanExtra("pictureRefresh", false);
-		stage = it.getIntExtra("stage", -1);
+		volum = it.getFloatExtra(getString(R.string.volum_key), 0.1f);
+		pictureRefresh = it.getBooleanExtra(
+				getString(R.string.picture_refresh_key), false);
+		stage = it.getIntExtra(getString(R.string.stage_key), -1);
 		gameView.setStage(stage);
 
 		if (pictureRefresh) {
@@ -112,13 +115,16 @@ public class MainGameActivity extends Activity {
 		}
 
 		if (ImageUtil.isEmpty()) {
-			createDialog("No pictures", "没有图片", -1).setPositiveButton("确定",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							finish();
-						}
-					}).show();
+			createDialog(getString(R.string.no_picture_dialog_label),
+					getString(R.string.no_picture_dialog_message), -1)
+					.setPositiveButton(getString(R.string.dialog_yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+							}).show();
 		} else {
 			startGame(GameConf.DEFAULT_TIME);
 		}
@@ -146,25 +152,29 @@ public class MainGameActivity extends Activity {
 				return true;
 			}
 		});
-		lostDialog = createDialog("Lost", "游戏失败！重新开始", R.drawable.lost)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		lostDialog = createDialog(getString(R.string.lost_dialog_label),
+				getString(R.string.lost_dialog_message), R.drawable.lost)
+				.setPositiveButton(getString(R.string.dialog_yes),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								soundPool.stop(xuPlay);
+								startGame(GameConf.DEFAULT_TIME);
+							}
+						}).setCancelable(false);
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						soundPool.stop(xuPlay);
-						startGame(GameConf.DEFAULT_TIME);
-					}
-				}).setCancelable(false);
-
-		successDialog = createDialog("Success", "游戏胜利！重新开始", R.drawable.success)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						soundPool.stop(plamPlay);
-						finish();
-					}
-				}).setCancelable(false);
+		successDialog = createDialog(getString(R.string.success_dialog_label),
+				getString(R.string.success_dialog_message), R.drawable.success)
+				.setPositiveButton(getString(R.string.dialog_yes),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								soundPool.stop(plamPlay);
+								finish();
+							}
+						}).setCancelable(false);
 		helpBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -172,7 +182,8 @@ public class MainGameActivity extends Activity {
 					selected = null;
 					gameView.helpCouples();
 					helpNum--;
-					helpBtn.setText("Help " + helpNum);
+					helpBtn.setText(getString(R.string.help_label) + " "
+							+ helpNum);
 				}
 				if (helpNum < 1) {
 					helpBtn.setEnabled(false);
@@ -202,11 +213,12 @@ public class MainGameActivity extends Activity {
 		float touchY = event.getY();
 		Piece currentPiece = gameService.findPiece(touchX, touchY);
 		if (null == currentPiece) {
-			Log.d("findPiece", "null");
+			Log.d(getString(R.string.find_piece_label),
+					getString(R.string.null_message));
 			return;
 		}
-		Log.d("findPiece",
-				String.valueOf(touchX) + " " + String.valueOf(touchY));
+		// Log.d("findPiece",
+		// String.valueOf(touchX) + " " + String.valueOf(touchY));
 		this.gameView.setSelectedPiece(currentPiece);
 		if (null == this.selected) {
 			this.selected = currentPiece;
