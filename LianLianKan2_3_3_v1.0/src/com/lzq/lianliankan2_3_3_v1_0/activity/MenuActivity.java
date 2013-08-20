@@ -3,6 +3,7 @@ package com.lzq.lianliankan2_3_3_v1_0.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
@@ -14,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -27,7 +27,7 @@ import android.widget.SeekBar;
 import com.lzq.lianliankan2_3_3_v1_0.R;
 import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 
-public class StartActivity extends Activity {
+public class MenuActivity extends Activity {
 	public static final int LIST_MSG = 10;
 	Button makePictureBtn = null;
 	Button startBtn = null;
@@ -40,6 +40,7 @@ public class StartActivity extends Activity {
 	boolean pictureRefresh = false;
 	ImageView title = null;
 
+	@SuppressLint("HandlerLeak")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		initGameConf();
@@ -83,7 +84,7 @@ public class StartActivity extends Activity {
 		}
 
 		final AlertDialog settingDialog = new AlertDialog.Builder(
-				StartActivity.this).setTitle(getString(R.string.setting))
+				MenuActivity.this).setTitle(getString(R.string.setting))
 				.setView(setLayout)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -99,8 +100,8 @@ public class StartActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(StartActivity.this,
-						StageSelectActivity.class);
+				Intent intent = new Intent(MenuActivity.this,
+						StagesActivity.class);
 				intent.putExtra("volum", (float) currentVolum / (float) 100);
 				intent.putExtra("pictureRefresh", pictureRefresh);
 				pictureRefresh = false;
@@ -120,8 +121,8 @@ public class StartActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(StartActivity.this,
-						ListCropPicturesActivity.class);
+				Intent intent = new Intent(MenuActivity.this,
+						CropPicturesActivity.class);
 				startActivityForResult(intent, LIST_MSG);
 			}
 		});

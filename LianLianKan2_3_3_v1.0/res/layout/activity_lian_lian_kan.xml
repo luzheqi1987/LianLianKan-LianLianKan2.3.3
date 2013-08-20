@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/room"
-    tools:context=".LianLianKanActivity" >
+    tools:context=".MainGameActivity" >
 
     <com.lzq.lianliankan2_3_3_v1_0.view.GameView
         android:id="@+id/gameview"

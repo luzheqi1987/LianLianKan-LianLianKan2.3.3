@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -33,7 +33,7 @@ import com.lzq.lianliankan2_3_3_v1_0.serivce.GameServiceImpl;
 import com.lzq.lianliankan2_3_3_v1_0.utils.ImageUtil;
 import com.lzq.lianliankan2_3_3_v1_0.view.GameView;
 
-public class LianLianKanActivity extends Activity {
+public class MainGameActivity extends Activity {
 	private GameConf config;
 	private GameService gameService;
 	private GameView gameView;
@@ -60,6 +60,7 @@ public class LianLianKanActivity extends Activity {
 	private Button helpBtn = null;
 	private int helpNum = 3;
 
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

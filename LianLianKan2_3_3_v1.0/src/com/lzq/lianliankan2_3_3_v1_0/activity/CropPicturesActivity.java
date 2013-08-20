@@ -28,7 +28,7 @@ import android.widget.LinearLayout.LayoutParams;
 import com.lzq.lianliankan2_3_3_v1_0.R;
 import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 
-public class ListCropPicturesActivity extends Activity {
+public class CropPicturesActivity extends Activity {
 	private GridView gridView = null;
 	private File[] files = null;
 	public static final int CROP_MSG = 100;
@@ -51,21 +51,20 @@ public class ListCropPicturesActivity extends Activity {
 	}
 
 	private class OnItemClickListenerImpl implements OnItemClickListener {
-		@SuppressWarnings("unchecked")
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) { // 选项单击事件
-			ImageView showImg = new ImageView(ListCropPicturesActivity.this); // 定义图片组件
+			ImageView showImg = new ImageView(CropPicturesActivity.this); // 定义图片组件
 			showImg.setScaleType(ImageView.ScaleType.CENTER); // 居中显示
 			showImg.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)); // 布局参数
-			final File f = (File) ListCropPicturesActivity.this.cropPictureAdaptar
+			final File f = (File) CropPicturesActivity.this.cropPictureAdaptar
 					.getItem(position); // 取出Map
 			Bitmap bm = BitmapFactory.decodeFile(getFilesDir().toString() + "/"
 					+ f.getName());
 			showImg.setImageBitmap(bm);
 			Dialog dialog = new AlertDialog.Builder(
-					ListCropPicturesActivity.this) // 创建Dialog
+					CropPicturesActivity.this) // 创建Dialog
 					// .setIcon(R.drawable.pic_m) // 设置显示图片
 					.setTitle("查看图片") // 设置标题
 					.setView(showImg) // 设置组件
@@ -109,8 +108,8 @@ public class ListCropPicturesActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.createcroppicture:
-			Intent intent = new Intent(ListCropPicturesActivity.this,
-					MakePictureActivity.class);
+			Intent intent = new Intent(CropPicturesActivity.this,
+					CropPictureActivity.class);
 			intent.putExtra("baseFileName", "ci");
 			intent.putExtra("mOutputX", GameConf.PIECE_WIDTH);
 			intent.putExtra("mOutputY", GameConf.PIECE_HEIGHT);

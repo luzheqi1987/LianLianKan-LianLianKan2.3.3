@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.LianLianKanActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.MainGameActivity"
             android:screenOrientation="portrait" >
 
             <!--
@@ -26,7 +26,7 @@
             -->
         </activity>
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.StartActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.MenuActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.MakePictureActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.CropPictureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/crop_label" >
             <intent-filter android:label="@string/crop_label" >
@@ -49,11 +49,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.ListCropPicturesActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.CropPicturesActivity"
             android:label="@string/title_activity_list_crop_pictures" >
         </activity>
         <activity
-            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.StageSelectActivity"
+            android:name="com.lzq.lianliankan2_3_3_v1_0.activity.StagesActivity"
             android:label="@string/title_activity_stage_select" >
         </activity>
     </application>

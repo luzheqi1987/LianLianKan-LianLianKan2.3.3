@@ -34,8 +34,8 @@ import com.lzq.lianliankan2_3_3_v1_0.crop.CropImageView;
 import com.lzq.lianliankan2_3_3_v1_0.crop.HighlightView;
 import com.lzq.lianliankan2_3_3_v1_0.utils.Util;
 
-public class MakePictureActivity extends MonitoredActivity {
-	private static final String TAG = "MakePictureActivity";
+public class CropPictureActivity extends MonitoredActivity {
+	private static final String TAG = "CropPictureActivity";
 	private CropImageView corpPicture = null;
 	private int mAspectX, mAspectY; // CR: two definitions per line == sad //
 									// panda.
@@ -262,8 +262,8 @@ public class MakePictureActivity extends MonitoredActivity {
 			} finally {
 				Util.closeSilently(outputStream);
 			}
-			setResult(RESULT_OK, new Intent(MakePictureActivity.this,
-					StartActivity.class));
+			setResult(RESULT_OK, new Intent(CropPictureActivity.this,
+					MenuActivity.class));
 		}
 
 		croppedImage.recycle();
@@ -442,7 +442,7 @@ public class MakePictureActivity extends MonitoredActivity {
 					if (mNumFaces > 1) {
 						// CR: no need for the variable t. just do
 						// Toast.makeText(...).show().
-						Toast t = Toast.makeText(MakePictureActivity.this,
+						Toast t = Toast.makeText(CropPictureActivity.this,
 								R.string.multiface_crop_help,
 								Toast.LENGTH_SHORT);
 						t.show();

@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,7 +21,7 @@ import android.widget.ImageView;
 
 import com.lzq.lianliankan2_3_3_v1_0.R;
 
-public class StageSelectActivity extends Activity {
+public class StagesActivity extends Activity {
 	SharedPreferences sharedPreferences = null;
 	String keyHead = "stage";
 	GridView stagesView = null;
@@ -80,8 +79,8 @@ public class StageSelectActivity extends Activity {
 			if (position >= newerStage) {
 				return;
 			}
-			Intent intent = new Intent(StageSelectActivity.this,
-					LianLianKanActivity.class);
+			Intent intent = new Intent(StagesActivity.this,
+					MainGameActivity.class);
 			Intent it = getIntent();
 			intent.putExtra("volum",
 					(float) sharedPreferences.getInt("volum", -1) / (float) 100);
