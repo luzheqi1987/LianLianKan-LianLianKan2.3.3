@@ -18,11 +18,11 @@ public class GameConf {
 	private int beginImageY;
 	private int xSize;
 	private int ySize;
-	private long gameTime;
+	private int gameTime;
 	private Context context;
 
 	public GameConf(int xSize, int ySize, int beginImageX, int beginImageY,
-			long gameTime, Context context) {
+			int gameTime, Context context) {
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.beginImageX = beginImageX;
@@ -45,7 +45,10 @@ public class GameConf {
 		baseFileName = str;
 	}
 
-	public long getGameTime() {
+	public int getGameTime() {
+		if (0 == gameTime) {
+			return DEFAULT_TIME;
+		}
 		return gameTime;
 	}
 

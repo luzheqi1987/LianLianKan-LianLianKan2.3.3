@@ -21,6 +21,8 @@ import com.lzq.lianliankan2_3_3_v1_0.model.LinkInfo;
 import com.lzq.lianliankan2_3_3_v1_0.model.Piece;
 import com.lzq.lianliankan2_3_3_v1_0.serivce.GameService;
 import com.lzq.lianliankan2_3_3_v1_0.utils.ImageUtil;
+import com.lzq.lianliankan2_3_3_v1_0.view.piecemove.IPieceMove;
+import com.lzq.lianliankan2_3_3_v1_0.view.piecemove.PieceMoveFactory;
 
 /**
  * @author Administrator
@@ -34,8 +36,9 @@ public class GameView extends View {
 	private Bitmap selectImage;
 	private Piece firstPiece;
 	private Piece secondPiece;
-	private int stage = -1;
+	private int stage;
 	private Piece[] helpPieces;
+	private IPieceMove pieceMove;
 
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -102,16 +105,17 @@ public class GameView extends View {
 	}
 
 	public void move() {
-		switch (stage) {
-		case 2:
-			moveLeft();
-			break;
-		case 3:
-			moveRight();
-			break;
-		default:
-			noMove();
-		}
+		pieceMove.move(gameService, firstPiece, secondPiece);
+		// switch (stage) {
+		// case 2:
+		// moveLeft();
+		// break;
+		// case 3:
+		// moveRight();
+		// break;
+		// default:
+		// noMove();
+		// }
 	}
 
 	public void helpCouples() {
@@ -235,6 +239,8 @@ public class GameView extends View {
 
 	public void setStage(int stage) {
 		this.stage = stage;
+		pieceMove = null;
+		pieceMove = PieceMoveFactory.createPieceMove(stage);
 	}
 
 }

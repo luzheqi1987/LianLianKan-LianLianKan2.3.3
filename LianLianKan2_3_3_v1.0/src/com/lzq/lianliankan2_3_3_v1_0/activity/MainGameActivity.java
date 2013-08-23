@@ -44,28 +44,28 @@ public class MainGameActivity extends Activity {
 	private Timer timer = new Timer();
 	private int gameTime;
 	private boolean isPlaying;
-	SoundPool soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 8);
-	int dis;
-	int plam;
-	int plamPlay;
-	int xu;
-	int xuPlay;
+	private SoundPool soundPool = new SoundPool(1, AudioManager.STREAM_SYSTEM,
+			8);
+	private int clear; // Í¼Æ¬Ïû³ýÉùÒô
+	private int plam; // ¹ÄÕÆID
+	private int plamPlay; // ¹ÄÕÆ²¥·ÅID
+	private int xu; // ÐêÉùID
+	private int xuPlay; // ÐêÉù²¥·ÅID
 	private Piece selected = null;
-	private float volum = 0.1f;
+	private float volum;
 	private boolean pictureRefresh = false;
-	private int stage = -1;
-	SharedPreferences sharedPreferences = null;
-	SharedPreferences.Editor editor = null;
-	String keyHead = "stage";
+	private int stage;
+	private SharedPreferences sharedPreferences = null;
+	private SharedPreferences.Editor editor = null;
+	private String keyHead = "stage";
 	private Button helpBtn = null;
-	private int helpNum = 3;
+	private int helpNum;
 
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 0x0123:
+			if (msg.what == getResources().getInteger(R.integer.count_down_msg)) {
 				timeTextView.setText(getString(R.string.last_time_label) + " "
 						+ gameTime);
 				gameTime--;
@@ -76,7 +76,6 @@ public class MainGameActivity extends Activity {
 					xuPlay = soundPool.play(xu, volum, volum, 0, 0, 1);
 					return;
 				}
-				break;
 			}
 		}
 	};
@@ -89,25 +88,30 @@ public class MainGameActivity extends Activity {
 	}
 
 	private void init() {
-		config = new GameConf(9, 11, 0, 0, 100000, this);
+		config = new GameConf(getResources().getInteger(R.integer.x_size),
+				getResources().getInteger(R.integer.y_size), 0, 0,
+				getResources().getInteger(R.integer.game_time), this);
 		gameView = (GameView) findViewById(R.id.gameview);
 		timeTextView = (TextView) findViewById(R.id.timeText);
+		helpNum = getResources().getInteger(R.integer.help_num);
 		helpBtn = (Button) findViewById(R.id.helpbtn);
 		helpBtn.setText(getString(R.string.help_label) + " " + helpNum);
 		// startButton = (Button) findViewById(R.id.startButton);
 		sharedPreferences = getSharedPreferences(
 				getString(R.string.preferences_key), MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-		dis = soundPool.load(this, R.raw.dis, 1);
+		clear = soundPool.load(this, R.raw.dis, 1);
 		plam = soundPool.load(this, R.raw.plam, 1);
 		xu = soundPool.load(this, R.raw.xu, 1);
 		gameService = new GameServiceImpl(this.config);
 		gameView.setGameService(gameService);
 		Intent it = getIntent();
-		volum = it.getFloatExtra(getString(R.string.volum_key), 0.1f);
+		volum = it.getFloatExtra(getString(R.string.volum_key),
+				Float.valueOf(getString(R.string.default_volum)));
 		pictureRefresh = it.getBooleanExtra(
 				getString(R.string.picture_refresh_key), false);
-		stage = it.getIntExtra(getString(R.string.stage_key), -1);
+		stage = it.getIntExtra(getString(R.string.stage_key), getResources()
+				.getInteger(R.integer.error_num));
 		gameView.setStage(stage);
 
 		if (pictureRefresh) {
@@ -126,7 +130,7 @@ public class MainGameActivity extends Activity {
 								}
 							}).show();
 		} else {
-			startGame(GameConf.DEFAULT_TIME);
+			startGame(config.getGameTime());
 		}
 		// startButton.setOnClickListener(new View.OnClickListener() {
 		//
@@ -160,7 +164,7 @@ public class MainGameActivity extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								soundPool.stop(xuPlay);
-								startGame(GameConf.DEFAULT_TIME);
+								startGame(config.getGameTime());
 							}
 						}).setCancelable(false);
 
@@ -246,7 +250,7 @@ public class MainGameActivity extends Activity {
 			stopTimer();
 		}
 		this.gameTime = gameTime;
-		if (gameTime == GameConf.DEFAULT_TIME) {
+		if (gameTime == config.getGameTime()) {
 			gameView.startGame();
 		}
 		isPlaying = true;
@@ -257,9 +261,10 @@ public class MainGameActivity extends Activity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				handler.sendEmptyMessage(0x0123);
+				handler.sendEmptyMessage(getResources().getInteger(
+						R.integer.count_down_msg));
 			}
-		}, 0, 1000);
+		}, 0, getResources().getInteger(R.integer.count_down_rate));
 		this.selected = null;
 	}
 
@@ -301,7 +306,7 @@ public class MainGameActivity extends Activity {
 		// }
 		// }
 		this.selected = null;
-		soundPool.play(dis, volum, volum, 0, 0, 1);
+		soundPool.play(clear, volum, volum, 0, 0, 1);
 		if (!this.gameService.hasPieces()) {
 			this.successDialog.show();
 			plamPlay = soundPool.play(plam, volum, volum, 0, 0, 1);

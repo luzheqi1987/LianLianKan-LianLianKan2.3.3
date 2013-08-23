@@ -23,21 +23,20 @@ import com.lzq.lianliankan2_3_3_v1_0.R;
 
 public class StagesActivity extends Activity {
 	SharedPreferences sharedPreferences = null;
-	String keyHead = "stage";
 	GridView stagesView = null;
-	int maxStage = -1;
+	int maxStage; // 最大的关卡数
 	Map<String, Integer> resourceValues = new HashMap<String, Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stage_select);
+
 		Field[] drawableFields = R.drawable.class.getFields();
 		sharedPreferences = getSharedPreferences(
 				getString(R.string.preferences_key), MODE_PRIVATE);
 		maxStage = sharedPreferences.getInt(getString(R.string.max_stage_key),
-				1);
-		int i = 1;
+				getResources().getInteger(R.integer.default_stages));
 
 		try {
 			for (Field field : drawableFields) {
@@ -51,27 +50,7 @@ public class StagesActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		while (sharedPreferences.getBoolean(getString(R.string.stage_head) + i,
-				false)) {
-			i++;
-		}
-		List<Integer> listValues = new ArrayList<Integer>();
-		for (int j = 1; j <= maxStage; j++) {
-			if (j <= i) {
-				listValues.add(resourceValues
-						.get(getString(R.string.stage_picture_head) + j
-								+ getString(R.string.stage_picture_black)));
-			} else {
-				listValues.add(resourceValues
-						.get(getString(R.string.stage_picture_head) + j
-								+ getString(R.string.stage_picture_gray)));
-			}
-		}
-
-		stagesView = (GridView) findViewById(R.id.liststages);
-		stagesView.setAdapter(new ImageAdapter(this, listValues));
-		stagesView.setOnItemClickListener(new OnItemClickListenerImpl(Math.min(
-				i, maxStage)));
+		showStages();
 	}
 
 	private class OnItemClickListenerImpl implements OnItemClickListener {
@@ -104,28 +83,7 @@ public class StagesActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		int i = 1;
-		while (sharedPreferences.getBoolean(getString(R.string.stage_head) + i,
-				false)) {
-			i++;
-		}
-		List<Integer> listValues = new ArrayList<Integer>();
-		for (int j = 1; j <= maxStage; j++) {
-			if (j <= i) {
-				listValues.add(resourceValues
-						.get(getString(R.string.stage_picture_head) + j
-								+ getString(R.string.stage_picture_black)));
-			} else {
-				listValues.add(resourceValues
-						.get(getString(R.string.stage_picture_head) + j
-								+ getString(R.string.stage_picture_gray)));
-			}
-		}
-
-		stagesView = (GridView) findViewById(R.id.liststages);
-		stagesView.setAdapter(new ImageAdapter(this, listValues));
-		stagesView.setOnItemClickListener(new OnItemClickListenerImpl(Math.min(
-				i, maxStage)));
+		showStages();
 		super.onResume();
 	}
 
@@ -162,4 +120,28 @@ public class StagesActivity extends Activity {
 		}
 	}
 
+	private void showStages() {
+		int stage = 1;
+		while (sharedPreferences.getBoolean(getString(R.string.stage_head)
+				+ stage, false)) {
+			stage++;
+		}
+		List<Integer> listValues = new ArrayList<Integer>();
+		for (int i = 1; i <= maxStage; i++) {
+			if (i <= stage) {
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + i
+								+ getString(R.string.stage_picture_black)));
+			} else {
+				listValues.add(resourceValues
+						.get(getString(R.string.stage_picture_head) + i
+								+ getString(R.string.stage_picture_gray)));
+			}
+		}
+
+		stagesView = (GridView) findViewById(R.id.liststages);
+		stagesView.setAdapter(new ImageAdapter(this, listValues));
+		stagesView.setOnItemClickListener(new OnItemClickListenerImpl(Math.min(
+				stage, maxStage)));
+	}
 }

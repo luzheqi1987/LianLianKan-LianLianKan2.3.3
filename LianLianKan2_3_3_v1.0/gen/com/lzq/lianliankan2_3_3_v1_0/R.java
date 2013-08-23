@@ -13,7 +13,7 @@ public final class R {
         public static final int reverse=0x7f040001;
     }
     public static final class array {
-        public static final int months_abbreviated=0x7f080000;
+        public static final int months_abbreviated=0x7f090000;
     }
     public static final class attr {
     }
@@ -88,22 +88,39 @@ public final class R {
         public static final int success=0x7f020037;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b000e;
-        public static final int createcroppicture=0x7f0b000f;
-        public static final int croppicture=0x7f0b0004;
-        public static final int discard=0x7f0b0006;
-        public static final int gameview=0x7f0b0000;
-        public static final int helpbtn=0x7f0b0002;
-        public static final int listcroppicture=0x7f0b0003;
-        public static final int liststages=0x7f0b0008;
-        public static final int makePicBtn=0x7f0b000b;
-        public static final int onecroppicture=0x7f0b000d;
-        public static final int save=0x7f0b0005;
-        public static final int setBtn=0x7f0b000c;
-        public static final int startBtn=0x7f0b000a;
-        public static final int timeText=0x7f0b0001;
-        public static final int title=0x7f0b0009;
-        public static final int volum=0x7f0b0007;
+        public static final int action_settings=0x7f0c000e;
+        public static final int createcroppicture=0x7f0c000f;
+        public static final int croppicture=0x7f0c0004;
+        public static final int discard=0x7f0c0006;
+        public static final int gamename=0x7f0c0009;
+        public static final int gameview=0x7f0c0000;
+        public static final int helpbtn=0x7f0c0002;
+        public static final int listcroppicture=0x7f0c0003;
+        public static final int liststages=0x7f0c0008;
+        public static final int makePicBtn=0x7f0c000b;
+        public static final int onecroppicture=0x7f0c000d;
+        public static final int save=0x7f0c0005;
+        public static final int setBtn=0x7f0c000c;
+        public static final int startBtn=0x7f0c000a;
+        public static final int timeText=0x7f0c0001;
+        public static final int volum=0x7f0c0007;
+    }
+    public static final class integer {
+        public static final int count_down_msg=0x7f070008;
+        public static final int count_down_rate=0x7f070007;
+        public static final int crop_msg=0x7f070002;
+        public static final int default_stages=0x7f070006;
+        public static final int error_num=0x7f070004;
+        public static final int game_name_act_time=0x7f07000b;
+        public static final int game_name_anmi=0x7f070009;
+        public static final int game_name_reverse=0x7f07000a;
+        public static final int game_time=0x7f07000e;
+        public static final int help_num=0x7f070003;
+        public static final int list_msg=0x7f070000;
+        public static final int max_stage=0x7f070001;
+        public static final int one_num=0x7f070005;
+        public static final int x_size=0x7f07000c;
+        public static final int y_size=0x7f07000d;
     }
     public static final class layout {
         public static final int activity_lian_lian_kan=0x7f030000;
@@ -115,11 +132,11 @@ public final class R {
         public static final int one_crop_picture=0x7f030006;
     }
     public static final class menu {
-        public static final int lian_lian_kan=0x7f0a0000;
-        public static final int list_crop_pictures=0x7f0a0001;
-        public static final int make_picture=0x7f0a0002;
-        public static final int stage_select=0x7f0a0003;
-        public static final int start=0x7f0a0004;
+        public static final int lian_lian_kan=0x7f0b0000;
+        public static final int list_crop_pictures=0x7f0b0001;
+        public static final int make_picture=0x7f0b0002;
+        public static final int stage_select=0x7f0b0003;
+        public static final int start=0x7f0b0004;
     }
     public static final class raw {
         public static final int dis=0x7f050000;
@@ -127,64 +144,65 @@ public final class R {
         public static final int xu=0x7f050002;
     }
     public static final class string {
-        public static final int action_settings=0x7f070001;
-        public static final int app_name=0x7f070000;
-        public static final int base_file_name=0x7f07001a;
-        public static final int base_file_name_key=0x7f070019;
+        public static final int action_settings=0x7f080001;
+        public static final int app_name=0x7f080000;
+        public static final int base_file_name=0x7f08001a;
+        public static final int base_file_name_key=0x7f080019;
         /**  Button indicating that the cropped image should be reverted back to the original 
          */
-        public static final int crop_discard_text=0x7f07000b;
+        public static final int crop_discard_text=0x7f08000b;
         /**  menu pick: crop the currently selected image 
          */
-        public static final int crop_label=0x7f07000c;
-        public static final int crop_picture_make=0x7f070006;
+        public static final int crop_label=0x7f08000c;
+        public static final int crop_picture_make=0x7f080006;
         /**  Toast/alert that the image is being saved to the SD card 
          */
-        public static final int crop_pictures_label=0x7f07000d;
+        public static final int crop_pictures_label=0x7f08000d;
         /**  Button indicating that the cropped image should be saved 
          */
-        public static final int crop_save_text=0x7f07000a;
-        public static final int dialog_cancel=0x7f070016;
-        public static final int dialog_close=0x7f070018;
-        public static final int dialog_delete=0x7f070017;
-        public static final int dialog_ok=0x7f070014;
-        public static final int dialog_yes=0x7f070015;
-        public static final int find_piece_label=0x7f070027;
-        public static final int hello_world=0x7f070002;
-        public static final int help_label=0x7f07001f;
-        public static final int last_time_label=0x7f07001e;
-        public static final int lost_dialog_label=0x7f070022;
-        public static final int lost_dialog_message=0x7f070023;
-        public static final int m_output_x_key=0x7f07001b;
-        public static final int m_output_y_key=0x7f07001c;
-        public static final int m_scale_key=0x7f07001d;
-        public static final int max_stage_key=0x7f070010;
+        public static final int crop_save_text=0x7f08000a;
+        public static final int default_volum=0x7f08002c;
+        public static final int dialog_cancel=0x7f080016;
+        public static final int dialog_close=0x7f080018;
+        public static final int dialog_delete=0x7f080017;
+        public static final int dialog_ok=0x7f080014;
+        public static final int dialog_yes=0x7f080015;
+        public static final int find_piece_label=0x7f080027;
+        public static final int hello_world=0x7f080002;
+        public static final int help_label=0x7f08001f;
+        public static final int last_time_label=0x7f08001e;
+        public static final int lost_dialog_label=0x7f080022;
+        public static final int lost_dialog_message=0x7f080023;
+        public static final int m_output_x_key=0x7f08001b;
+        public static final int m_output_y_key=0x7f08001c;
+        public static final int m_scale_key=0x7f08001d;
+        public static final int max_stage_key=0x7f080010;
         /**  Hint that appears when cropping an image with more than one face 
          */
-        public static final int multiface_crop_help=0x7f070008;
-        public static final int no_picture_dialog_label=0x7f070020;
-        public static final int no_picture_dialog_message=0x7f070021;
-        public static final int null_message=0x7f070026;
-        public static final int picture_refresh_key=0x7f070013;
-        public static final int preferences_key=0x7f07000f;
+        public static final int multiface_crop_help=0x7f080008;
+        public static final int no_picture_dialog_label=0x7f080020;
+        public static final int no_picture_dialog_message=0x7f080021;
+        public static final int null_message=0x7f080026;
+        public static final int picture_refresh_key=0x7f080013;
+        public static final int preferences_key=0x7f08000f;
         /**  Toast/alert that the face detection is being run 
          */
-        public static final int running_face_detection=0x7f070009;
-        public static final int saving_image=0x7f07000e;
-        public static final int setting=0x7f070005;
-        public static final int stage_head=0x7f070028;
-        public static final int stage_key=0x7f070011;
-        public static final int stage_picture_black=0x7f07002a;
-        public static final int stage_picture_gray=0x7f07002b;
-        public static final int stage_picture_head=0x7f070029;
-        public static final int success_dialog_label=0x7f070024;
-        public static final int success_dialog_message=0x7f070025;
-        public static final int title_activity_list_crop_pictures=0x7f07002c;
-        public static final int title_activity_make_picture=0x7f070007;
-        public static final int title_activity_stage_select=0x7f07002d;
-        public static final int title_activity_start=0x7f070003;
-        public static final int volum_key=0x7f070012;
-        public static final int volum_set=0x7f070004;
+        public static final int running_face_detection=0x7f080009;
+        public static final int saving_image=0x7f08000e;
+        public static final int setting=0x7f080005;
+        public static final int stage_head=0x7f080028;
+        public static final int stage_key=0x7f080011;
+        public static final int stage_picture_black=0x7f08002a;
+        public static final int stage_picture_gray=0x7f08002b;
+        public static final int stage_picture_head=0x7f080029;
+        public static final int success_dialog_label=0x7f080024;
+        public static final int success_dialog_message=0x7f080025;
+        public static final int title_activity_list_crop_pictures=0x7f08002d;
+        public static final int title_activity_make_picture=0x7f080007;
+        public static final int title_activity_stage_select=0x7f08002e;
+        public static final int title_activity_start=0x7f080003;
+        public static final int volum_key=0x7f080012;
+        public static final int volum_set=0x7f080004;
     }
     public static final class style {
         /** 
@@ -208,10 +226,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f090000;
+        public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f090001;
+        public static final int AppTheme=0x7f0a0001;
     }
 }

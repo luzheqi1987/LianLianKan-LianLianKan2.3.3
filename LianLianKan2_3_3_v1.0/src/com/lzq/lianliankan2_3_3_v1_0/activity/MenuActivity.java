@@ -28,74 +28,56 @@ import com.lzq.lianliankan2_3_3_v1_0.R;
 import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 
 public class MenuActivity extends Activity {
-	public static final int LIST_MSG = 10;
-	public static final int MAX_STAGE = 3;
-	// public static final String PREFERENCES_KEY = "linkproperty";
-	// public static final String MAX_STAGE_KEY = "maxStage";
-	// public static final String VOLUM_KEY = "volum";
-	// public static final String PICTURE_REFRESH_KEY = "pictureRefresh";
-	// public static final String OK = "ok";
-	// public static final String CANCEL = "Cancel";
-
-	Button makePictureBtn = null;
-	Button startBtn = null;
-	Button setBtn = null;
-	AudioManager aManager = null;
-	SharedPreferences sharedPreferences = null;
-	SharedPreferences.Editor editor = null;
-	SeekBar volumBar = null;
-	int currentVolum = -1;
-	boolean pictureRefresh = false;
-	ImageView title = null;
+	private Button cropPictureBtn = null; // 创建图片按钮
+	private Button startBtn = null;// 开始游戏按钮
+	private Button setBtn = null;// 设置按钮
+	private AudioManager aManager = null;// audio管理实例
+	private SharedPreferences sharedPreferences = null; // 配置文件
+	private SharedPreferences.Editor sharedPreferencesEditor = null;// 配置文件editor
+	private SeekBar volumBar = null;// 音量调节条
+	private int currentVolum;// 当前音量
+	private boolean pictureRefresh = false; // 图片是否有根性
+	private ImageView gameName = null; // 游戏名称
+	private Animation anmi = null;// 游戏名称动画
+	private Animation reverse = null;// 游戏名称逆动画
+	private AlertDialog settingDialog = null; // 设置界面
 
 	@SuppressLint("HandlerLeak")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		initGameConf();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.activity_start);
-		startBtn = (Button) findViewById(R.id.startBtn);
-		setBtn = (Button) findViewById(R.id.setBtn);
-		makePictureBtn = (Button) findViewById(R.id.makePicBtn);
-		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
-		title = (ImageView) findViewById(R.id.title);
-
-		final Animation anmi = AnimationUtils.loadAnimation(this, R.anim.anmi);
-		anmi.setFillAfter(true);
-		final Animation reverse = AnimationUtils.loadAnimation(this,
-				R.anim.reverse);
-		reverse.setFillAfter(true);
 
 		final LinearLayout setLayout = (LinearLayout) getLayoutInflater()
-				.inflate(R.layout.activity_set, null);
-
+				.inflate(R.layout.activity_set, null); // 设置界面的布局
+		startBtn = (Button) findViewById(R.id.startBtn);
+		setBtn = (Button) findViewById(R.id.setBtn);
+		cropPictureBtn = (Button) findViewById(R.id.makePicBtn);
+		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+		gameName = (ImageView) findViewById(R.id.gamename);
 		volumBar = (SeekBar) setLayout.findViewById(R.id.volum);
 
-		int systemVolum = aManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		initGameConf(); // 初始化游戏配置
 
-		initSharedPreferences(systemVolum);
-
-		final AlertDialog settingDialog = new AlertDialog.Builder(
-				MenuActivity.this)
+		settingDialog = new AlertDialog.Builder(MenuActivity.this)
 				.setTitle(getString(R.string.setting))
 				.setView(setLayout)
 				.setPositiveButton(getString(R.string.dialog_ok),
 						new DialogInterface.OnClickListener() {
-
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
 								currentVolum = volumBar.getProgress();
-								editor.putInt(getString(R.string.volum_key),
+								sharedPreferencesEditor.putInt(
+										getString(R.string.volum_key),
 										currentVolum);
-								editor.commit();
+								sharedPreferencesEditor.commit();
 							}
 						})
 				.setNegativeButton(getString(R.string.dialog_cancel), null)
 				.create();
 
 		startBtn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MenuActivity.this,
@@ -110,91 +92,122 @@ public class MenuActivity extends Activity {
 		});
 
 		setBtn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				settingDialog.show();
 			}
 		});
 
-		makePictureBtn.setOnClickListener(new OnClickListener() {
-
+		cropPictureBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MenuActivity.this,
 						CropPicturesActivity.class);
-				startActivityForResult(intent, LIST_MSG);
+				startActivityForResult(intent,
+						getResources().getInteger(R.integer.list_msg));
 			}
 		});
 
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				if (msg.what == 0x123) {
-					title.startAnimation(anmi);
+				if (msg.what == getResources().getInteger(
+						R.integer.game_name_anmi)) {
+					gameName.startAnimation(anmi);
 				}
-				if (msg.what == 0x124) {
-					title.startAnimation(reverse);
+				if (msg.what == getResources().getInteger(
+						R.integer.game_name_reverse)) {
+					gameName.startAnimation(reverse);
 				}
 			}
 		};
 
 		new Timer().schedule(new TimerTask() {
-
 			@Override
 			public void run() {
-				handler.sendEmptyMessage(0x123);
+				handler.sendEmptyMessage(getResources().getInteger(
+						R.integer.game_name_anmi));
 				new Timer().schedule(new TimerTask() {
 					@Override
 					public void run() {
-						handler.sendEmptyMessage(0x124);
+						handler.sendEmptyMessage(getResources().getInteger(
+								R.integer.game_name_reverse));
 					}
-				}, 500);
+				}, getResources().getInteger(R.integer.game_name_act_time) / 2);
 			}
-		}, 0, 1000);
+		}, 0, getResources().getInteger(R.integer.game_name_act_time));
 	}
 
 	/**
-	 * @param systemVolum
+	 * 初始化游戏配置
 	 */
-	private void initSharedPreferences(int systemVolum) {
-		sharedPreferences = getSharedPreferences(
-				getString(R.string.preferences_key), MODE_PRIVATE);
-		editor = sharedPreferences.edit();
-
-		currentVolum = sharedPreferences.getInt(getString(R.string.volum_key),
-				-1);
-		if (-1 == currentVolum) {
-			currentVolum = systemVolum;
-			editor.putInt(getString(R.string.volum_key), currentVolum);
-			editor.commit();
-			volumBar.setProgress(currentVolum);
-		} else {
-			volumBar.setProgress(currentVolum);
-		}
-
-		if (-1 == sharedPreferences.getInt(getString(R.string.max_stage_key),
-				-1)) {
-			editor.putInt(getString(R.string.max_stage_key), MAX_STAGE);
-			editor.commit();
-		}
+	private void initGameConf() {
+		initBaseInfo();
+		initGameNameAnmi();
+		initSharedPreferences();
 	}
 
-	private void initGameConf() {
+	/**
+	 * 初始化基础信息
+	 */
+	private void initBaseInfo() {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		@SuppressWarnings("unused")
-		float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+		// float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+		// int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
+		// density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
 		int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
-		density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
-		densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
 		GameConf.init(densityDPI, getFilesDir().toString());
+
+		anmi = AnimationUtils.loadAnimation(this, R.anim.anmi);
+		anmi.setFillAfter(true);
+		reverse = AnimationUtils.loadAnimation(this, R.anim.reverse);
+		reverse.setFillAfter(true);
 	}
 
+	/**
+	 * 初始化游戏名称动画
+	 */
+	private void initGameNameAnmi() {
+		anmi = AnimationUtils.loadAnimation(this, R.anim.anmi);
+		anmi.setFillAfter(true);
+		reverse = AnimationUtils.loadAnimation(this, R.anim.reverse);
+		reverse.setFillAfter(true);
+	}
+
+
+	/**
+	 * 初始化配置文件
+	 */
+	private void initSharedPreferences() {
+		sharedPreferences = getSharedPreferences(
+				getString(R.string.preferences_key), MODE_PRIVATE);
+		sharedPreferencesEditor = sharedPreferences.edit();
+
+		currentVolum = sharedPreferences.getInt(getString(R.string.volum_key),
+				getResources().getInteger(R.integer.error_num));
+		if (getResources().getInteger(R.integer.error_num) == currentVolum) {
+			currentVolum = aManager.getStreamVolume(AudioManager.STREAM_MUSIC);;
+			sharedPreferencesEditor.putInt(getString(R.string.volum_key),
+					currentVolum);
+			sharedPreferencesEditor.commit();
+		} 
+		volumBar.setProgress(currentVolum);
+
+		if (getResources().getInteger(R.integer.error_num) == sharedPreferences
+				.getInt(getString(R.string.max_stage_key), getResources()
+						.getInteger(R.integer.error_num))) {
+			sharedPreferencesEditor.putInt(getString(R.string.max_stage_key),
+					getResources().getInteger(R.integer.max_stage));
+			sharedPreferencesEditor.commit();
+		}
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (RESULT_OK == resultCode && LIST_MSG == requestCode) {
-			pictureRefresh = true;
+		if (RESULT_OK == resultCode
+				&& getResources().getInteger(R.integer.list_msg) == requestCode) {
+			pictureRefresh = true; // 图片库已经更新
 		}
 	}
 }

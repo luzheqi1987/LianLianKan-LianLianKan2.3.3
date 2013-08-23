@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.lzq.lianliankan2_3_3_v1_0.R;
+import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 import com.lzq.lianliankan2_3_3_v1_0.crop.CropImageView;
 import com.lzq.lianliankan2_3_3_v1_0.crop.HighlightView;
 import com.lzq.lianliankan2_3_3_v1_0.utils.Util;
@@ -48,7 +49,7 @@ public class CropPictureActivity extends MonitoredActivity {
 	// These options specifiy the output image size and whether we should
 	// scale the output to fit it (or just crop it).
 	private int mOutputX, mOutputY;
-	private boolean mScale;
+	private boolean mScale; // 是否 规定剪切图片的大小
 	private boolean mScaleUp = true;
 	private Uri mSaveUri = null;
 	private ContentResolver mContentResolver; // These are various options can
@@ -65,17 +66,20 @@ public class CropPictureActivity extends MonitoredActivity {
 		setContentView(R.layout.activity_make_picture);
 		corpPicture = (CropImageView) findViewById(R.id.croppicture);
 
-		Intent srcIntent = getIntent();
+		Intent srcIntent = getIntent(); // 获取来源的intent
 		Bundle extras = srcIntent.getExtras();
 		baseFileName = extras.getString(getString(R.string.base_file_name_key));
-		mOutputX = extras.getInt(getString(R.string.m_output_x_key));
-		mOutputY = extras.getInt(getString(R.string.m_output_y_key));
+		mOutputX = extras.getInt(getString(R.string.m_output_x_key),
+				GameConf.PIECE_WIDTH);
+		mOutputY = extras.getInt(getString(R.string.m_output_y_key),
+				GameConf.PIECE_HEIGHT);
 		mScale = extras.getBoolean(getString(R.string.m_scale_key), true);
 
-		Intent intent = new Intent();
+		Intent intent = new Intent(); // 从系统图库中选择图片
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(intent, 1);
+		
 		findViewById(R.id.discard).setOnClickListener(
 				new View.OnClickListener() {
 					public void onClick(View v) {

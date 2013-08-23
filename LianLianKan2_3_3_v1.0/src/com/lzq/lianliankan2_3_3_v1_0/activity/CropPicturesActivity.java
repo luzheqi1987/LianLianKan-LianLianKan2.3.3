@@ -30,21 +30,17 @@ import com.lzq.lianliankan2_3_3_v1_0.conf.GameConf;
 
 public class CropPicturesActivity extends Activity {
 	private GridView gridView = null;
-	private File[] files = null;
-	public static final int CROP_MSG = 100;
-	private boolean pictureRefresh = false;
-	private CropPictureAdaptar cropPictureAdaptar = new CropPictureAdaptar(this);
-	static {
-
-	}
-
+	private File[] files = null; // 图片文件
+	private boolean pictureRefresh = false; //图片库是否更新
+	private CropPictureAdaptar cropPictureAdaptar = new CropPictureAdaptar(this); // 剪切图片适配器
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		init();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.activity_list_crop_pictures);
-
 		gridView = (GridView) findViewById(R.id.listcroppicture);
+		
+		init();
 		gridView.setAdapter(cropPictureAdaptar);
 		gridView.setOnItemClickListener(new OnItemClickListenerImpl());
 
@@ -66,8 +62,10 @@ public class CropPicturesActivity extends Activity {
 			Dialog dialog = new AlertDialog.Builder(CropPicturesActivity.this)
 					// 创建Dialog
 					// .setIcon(R.drawable.pic_m) // 设置显示图片
-					.setTitle(getString(R.string.crop_pictures_label))// 设置标题
-					.setView(showImg)// 设置组件
+					.setTitle(getString(R.string.crop_pictures_label))
+					// 设置标题
+					.setView(showImg)
+					// 设置组件
 					.setPositiveButton(getString(R.string.dialog_delete),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -98,7 +96,8 @@ public class CropPicturesActivity extends Activity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (RESULT_OK == resultCode && CROP_MSG == requestCode) {
+		if (RESULT_OK == resultCode
+				&& getResources().getInteger(R.integer.crop_msg) == requestCode) {
 			refreshFiles();
 			gridView.invalidateViews();
 			pictureRefresh = true;
@@ -117,7 +116,8 @@ public class CropPicturesActivity extends Activity {
 					GameConf.PIECE_WIDTH);
 			intent.putExtra(getString(R.string.m_output_y_key),
 					GameConf.PIECE_HEIGHT);
-			startActivityForResult(intent, CROP_MSG);
+			startActivityForResult(intent,
+					getResources().getInteger(R.integer.crop_msg));
 			break;
 		}
 		return false;

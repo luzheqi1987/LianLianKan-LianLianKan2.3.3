@@ -51,6 +51,7 @@
     <string name="stage_picture_head">stage_</string>
     <string name="stage_picture_black">_black</string>
     <string name="stage_picture_gray">_gray</string>
+    <string name="default_volum" format="float">0.1</string>
 
     <string-array name="months_abbreviated">
         <item>Jan</item>
